@@ -96,14 +96,13 @@ class AppDrawer extends StatelessWidget {
 
       ListTile(
         onTap: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context)=>const SettingsPage()));
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => const SettingsPage()));
         },
         leading: const Icon(Icons.settings),
         title: const Text("Settings"),
         trailing: const Icon(Icons.arrow_forward_ios_outlined),
       ),
-      
-      
     ]));
   }
 }

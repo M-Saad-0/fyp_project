@@ -1,5 +1,6 @@
-./BackEnd/nodemodules
 # Miscellaneous
+./BackEnd/nodemodules
+firebase_options.dart
 *.class
 *.log
 *.pyc
@@ -42,5 +43,5 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
-n o d e _ m o d u l e s /  
+node_modules/  
  

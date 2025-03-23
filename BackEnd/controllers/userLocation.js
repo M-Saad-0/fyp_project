@@ -1,26 +1,31 @@
 const UserLocation = require('../models/userLocation');
 
+const handleError = (res, error, statusCode = 500, message = "Internal Server Error") => {
+  res.status(statusCode).json({
+    code: statusCode,
+    message: message,
+    details: error.message || error,
+  });
+};
 
 exports.getAllLocations = async (req, res) => {
   try {
     const locations = await UserLocation.find();
     res.status(200).json(locations);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    handleError(res, error, 500, "Failed to retrieve locations");
   }
 };
-
 
 exports.getLocationByUserId = async (req, res) => {
   try {
     const location = await UserLocation.findOne({ userId: req.params.userId });
-    if (!location) return res.status(404).json({ message: 'Location not found' });
+    if (!location) return handleError(res, "Location not found", 404);
     res.status(200).json(location);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    handleError(res, error, 500, "Failed to retrieve location");
   }
 };
-
 
 exports.upsertLocation = async (req, res) => {
   try {
@@ -32,17 +37,16 @@ exports.upsertLocation = async (req, res) => {
     );
     res.status(200).json(location);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    handleError(res, error, 500, "Failed to update location");
   }
 };
-
 
 exports.deleteLocation = async (req, res) => {
   try {
     const location = await UserLocation.findOneAndDelete({ userId: req.params.userId });
-    if (!location) return res.status(404).json({ message: 'Location not found' });
-    res.status(200).json({ message: 'Location deleted' });
+    if (!location) return handleError(res, "Location not found", 404);
+    res.status(200).json({ message: "Location deleted" });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    handleError(res, error, 500, "Failed to delete location");
   }
 };

@@ -53,7 +53,7 @@ class _SignUpPageState extends State<SignUpPage> {
               break;
             }
           default:
-            debugPrint("Normal Life");
+            // debugPrint("Normal Life");
         }
         return SingleChildScrollView(
           child: Form(

@@ -1,9 +1,11 @@
 import 'package:backend_services_repository/backend_service_repositoy.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:next_gen_ai_healthcare/blocs/chat_bloc/chat_bloc.dart';
 import 'package:next_gen_ai_healthcare/blocs/item_bloc/item_bloc.dart';
 import 'package:next_gen_ai_healthcare/blocs/create_item_bloc/create_item_bloc.dart';
 import 'package:next_gen_ai_healthcare/pages/ai_diagnosis_pages/ai_diagnosis_page.dart';
+import 'package:next_gen_ai_healthcare/pages/chat_pages/ai_chatbot.dart';
 import 'package:next_gen_ai_healthcare/pages/item_pages/item_page.dart';
 import 'package:next_gen_ai_healthcare/pages/item_pages/add_item.dart';
 import 'package:next_gen_ai_healthcare/widgets/app_drawer.dart';
@@ -43,6 +45,23 @@ class _HomePageState extends State<HomePage> {
               ),
               _buildFeatureSection(
                 context,
+                title: "Chat with AI",
+                description: "Get more insights and information from AI",
+                icon: Icons.medical_information_sharp,
+                imagePath: 'assets/images/ai_diagnosis.png',
+                onTap: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => BlocProvider(
+                      create: (context) =>
+                          ChatBloc(ChatRequestImp(), ChatRepositoryImp()),
+                      child: const AiChatBot(),
+                    ),
+                  ),
+                ),
+              ),
+              _buildFeatureSection(
+                context,
                 title: "Rent Medical Instruments",
                 description: "Easily rent quality medical tools.",
                 icon: Icons.receipt_long_outlined,
@@ -51,7 +70,8 @@ class _HomePageState extends State<HomePage> {
                   context,
                   MaterialPageRoute(
                     builder: (context) => BlocProvider(
-                      create: (context) => ItemBloc(retrieveData: RetrieveDataImp()),
+                      create: (context) =>
+                          ItemBloc(retrieveData: RetrieveDataImp()),
                       child: const ItemPage(),
                     ),
                   ),
@@ -67,7 +87,8 @@ class _HomePageState extends State<HomePage> {
                   context,
                   MaterialPageRoute(
                     builder: (context) => BlocProvider(
-                      create: (context) => CreateItemBloc(storeData: StoreDataImp()),
+                      create: (context) =>
+                          CreateItemBloc(storeData: StoreDataImp()),
                       child: const AddItem(),
                     ),
                   ),

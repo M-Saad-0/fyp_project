@@ -11,11 +11,12 @@ const itemBorrowedSchema = new mongoose.Schema({
     ref: 'User',  
     required: true 
   },
-  lenderId: { 
+  borrowerId: { 
     type: mongoose.Schema.Types.ObjectId, 
     ref: 'User',  
     required: true 
   },
+  paymentMethod: { type: String, required: true },
   borrowDate: { type: Date, required: true },
   returnDate: { type: Date },
 });

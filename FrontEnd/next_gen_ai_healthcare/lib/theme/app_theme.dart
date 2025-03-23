@@ -1,44 +1,42 @@
 import 'package:flutter/material.dart';
 
 class AppThemes {
-  
   static const Color primaryColor = Color(0xFFFF9800);
 
-  
   static final ThemeData lightTheme = ThemeData(
-    primaryTextTheme: TextTheme(
+      primaryTextTheme: TextTheme(
         titleLarge: const TextStyle(
-          fontSize: 18, 
+          fontSize: 18,
           fontWeight: FontWeight.bold,
-          color: Colors.black87, 
+          color: Colors.black87,
         ),
         bodyMedium: const TextStyle(
-          fontSize: 14, 
-          color: Colors.black87, 
+          fontSize: 14,
+          color: Colors.black87,
         ),
         displaySmall: TextStyle(
-          fontSize: 12, 
+          fontSize: 12,
           color: Colors.grey[700],
         ),
         labelSmall: TextStyle(
-          fontSize: 12, 
+          fontSize: 12,
           color: Colors.grey[600],
         ),
       ),
       colorScheme: ColorScheme(
-        brightness: Brightness.light,
-        primary: AppThemes.primaryColor,
-        secondary: const Color(0xFF42A5F5),
-        tertiary: Colors.white,
-        surface: Colors.white,
-        error: Colors.red.shade700,
-        onPrimary: Colors.white,
-        onSecondary: Colors.black,
-        onError: Colors.white,
-        onTertiary: Colors.black87,
-        onSurface: Colors.black54,
-        onSurfaceVariant: Colors.grey[600]
-      ),
+          surfaceContainerLow: const Color.fromARGB(255, 241, 235, 235),
+          brightness: Brightness.light,
+          primary: AppThemes.primaryColor,
+          secondary: const Color(0xFF42A5F5),
+          tertiary: Colors.white,
+          surface: Colors.white,
+          error: Colors.red.shade700,
+          onPrimary: Colors.white,
+          onSecondary: Colors.black,
+          onError: Colors.white,
+          onTertiary: Colors.black87,
+          onSurface: Colors.black54,
+          onSurfaceVariant: Colors.grey[600]),
       brightness: Brightness.light,
       primaryColor: primaryColor,
       scaffoldBackgroundColor: Colors.white,
@@ -68,12 +66,13 @@ class AppThemes {
         ),
       ),
       textTheme: const TextTheme(
-      bodyLarge: TextStyle(fontSize: 18, color: Colors.black87),
-      bodyMedium: TextStyle(fontSize: 16, color: Colors.black54),
-      bodySmall: TextStyle(fontSize: 14, color: Colors.black45),
-      headlineLarge: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.black87),
-      labelSmall: TextStyle(fontSize: 18, color: Colors.black54),
-    ),
+        bodyLarge: TextStyle(fontSize: 18, color: Colors.black87),
+        bodyMedium: TextStyle(fontSize: 16, color: Colors.black54),
+        bodySmall: TextStyle(fontSize: 14, color: Colors.black45),
+        headlineLarge: TextStyle(
+            fontSize: 22, fontWeight: FontWeight.bold, color: Colors.black87),
+        labelSmall: TextStyle(fontSize: 18, color: Colors.black54),
+      ),
       inputDecorationTheme: const InputDecorationTheme(
         filled: true,
         fillColor: Color(0xFFF2F2F2),
@@ -97,41 +96,40 @@ class AppThemes {
       progressIndicatorTheme:
           const ProgressIndicatorThemeData(color: primaryColor));
 
-  
   static final ThemeData darkTheme = ThemeData(
       primaryTextTheme: TextTheme(
         titleLarge: const TextStyle(
-          fontSize: 18, 
+          fontSize: 18,
           fontWeight: FontWeight.bold,
-          color: Colors.white70, 
+          color: Colors.white70,
         ),
         bodyMedium: const TextStyle(
-          fontSize: 14, 
-          color: Colors.white70, 
+          fontSize: 14,
+          color: Colors.white70,
         ),
         bodySmall: TextStyle(
-          fontSize: 12, 
+          fontSize: 12,
           color: Colors.grey[400],
         ),
         labelSmall: TextStyle(
-          fontSize: 12, 
+          fontSize: 12,
           color: Colors.grey[500],
         ),
       ),
       colorScheme: ColorScheme(
-        brightness: Brightness.dark,
-        primary: AppThemes.primaryColor,
-        secondary: const Color(0xFF90CAF9),
-        tertiary: const Color(0xFF121212),
-        surface: const Color(0xFF1E1E1E),
-        error: Colors.red.shade700,
-        onPrimary: Colors.black,
-        onSecondary: Colors.white,
-        onError: Colors.black,
-        onTertiary: Colors.white70,
-        onSurface: Colors.white60,
-        onSurfaceVariant: Colors.grey[600]
-      ),
+          brightness: Brightness.dark,
+          surfaceContainerLow: Colors.grey[850],
+          primary: AppThemes.primaryColor,
+          secondary: const Color(0xFF90CAF9),
+          tertiary: const Color(0xFF121212),
+          surface: const Color(0xFF1E1E1E),
+          error: Colors.red.shade700,
+          onPrimary: Colors.black,
+          onSecondary: Colors.white,
+          onError: Colors.black,
+          onTertiary: Colors.white70,
+          onSurface: Colors.white60,
+          onSurfaceVariant: Colors.grey[600]),
       brightness: Brightness.dark,
       primaryColor: primaryColor,
       scaffoldBackgroundColor: const Color(0xFF121212),
@@ -161,14 +159,14 @@ class AppThemes {
               const TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
         ),
       ),
-       textTheme: const TextTheme(
-      bodyLarge: TextStyle(fontSize: 18, color: Colors.white70),
-      bodyMedium: TextStyle(fontSize: 16, color: Colors.white60),
-      bodySmall: TextStyle(fontSize: 14, color: Colors.white54),
-      headlineLarge: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.white70),
-      labelSmall: TextStyle(fontSize: 18, color: Colors.white60),
-    ),
-  
+      textTheme: const TextTheme(
+        bodyLarge: TextStyle(fontSize: 18, color: Colors.white70),
+        bodyMedium: TextStyle(fontSize: 16, color: Colors.white60),
+        bodySmall: TextStyle(fontSize: 14, color: Colors.white54),
+        headlineLarge: TextStyle(
+            fontSize: 22, fontWeight: FontWeight.bold, color: Colors.white70),
+        labelSmall: TextStyle(fontSize: 18, color: Colors.white60),
+      ),
       inputDecorationTheme: const InputDecorationTheme(
         filled: true,
         fillColor: Color(0xFF1F1F1F),

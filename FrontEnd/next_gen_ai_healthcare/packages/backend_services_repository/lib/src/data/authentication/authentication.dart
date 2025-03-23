@@ -1,12 +1,12 @@
 import 'dart:convert';
 
 import 'package:backend_services_repository/backend_service_repositoy.dart';
-import 'package:backend_services_repository/src/user/entities/entities.dart';
+import 'package:backend_services_repository/src/models/user/entities/entities.dart';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 
 abstract class Authentication {
-  Future<Map<String, dynamic>> checkUserAccountOnStartUp();
+  User? checkUserAccountOnStartUp();
   Future<Result<User, String>> createAnAccount(
       {required User user, required String password});
   Future<Result<User, String>> loginWithGoogle(
@@ -19,9 +19,9 @@ abstract class Authentication {
 
 class AuthenticationImp extends Authentication {
   @override
-  Future<Map<String, dynamic>> checkUserAccountOnStartUp() async {
+  User? checkUserAccountOnStartUp()  {
     // print("Dddddddddd");
-    Map<String, dynamic> checkUser = await LocalUserData().getUser();
+    User? checkUser =  LocalUserData().getUser();
     return checkUser;
   }
 
@@ -45,7 +45,7 @@ class AuthenticationImp extends Authentication {
       return Result.success(updatedUser);
     } else if (response.statusCode >= 400 && response.statusCode < 500) {
       final responseBody = json.decode(response.body);
-      return Result.failure(responseBody['msg']);
+      return Result.failure(responseBody['message']);
     } else {
       return Result.failure('');
       // return Result.failure('An unexpected error occurred.');
@@ -67,7 +67,7 @@ class AuthenticationImp extends Authentication {
       headers: {"Content-Type": "application/json"},
       body: json.encode({"email": email, "password": password}),
     );
-
+    print(response.statusCode);
     if (response.statusCode == 201) {
       final responseBody = json.decode(response.body);
       User loggedInUser = User.fromEntity(UserEntity.fromJson(responseBody));
@@ -75,7 +75,7 @@ class AuthenticationImp extends Authentication {
       return Result.success(loggedInUser);
     } else if (response.statusCode >= 400 && response.statusCode < 600) {
       final responseBody = json.decode(response.body);
-      return Result.failure(responseBody['error']['message']);
+      return Result.failure(responseBody['message']);
     } else {
       return Result.failure("An unexpected error occurred.");
     }
@@ -107,10 +107,12 @@ class AuthenticationImp extends Authentication {
     final response = await http.post(uri,
         headers: {'Content-Type': "application/json"}, body: json.encode(userJson));
     if (response.statusCode >= 400 && response.statusCode <= 600) {
-      return Result.failure(jsonDecode(response.body)['msg']);
+      debugPrint("**************400-600***************");
+      return Result.failure(json.decode(response.body)['message']);
     } else if (response.statusCode == 201) {
+      debugPrint("*************201****************");
       final responseBody = json.decode(response.body);
-      print(responseBody);
+      debugPrint(responseBody.toString());
       User loggedInUser = User.fromEntity(UserEntity.fromJson(responseBody));
       await saveAccountLocally(user: loggedInUser);
       return Result.success(loggedInUser);

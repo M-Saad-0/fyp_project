@@ -1,5 +1,4 @@
-import 'package:backend_services_repository/src/item/models/models.dart';
-import 'package:backend_services_repository/src/result_wraper.dart';
+import 'package:backend_services_repository/backend_service_repositoy.dart';
 
 abstract class StoreData {
   Future<Result<String, String>> storeAnItem({required Item item});

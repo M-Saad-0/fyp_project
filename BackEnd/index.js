@@ -12,7 +12,7 @@ const itemBorrowedRoutes = require('./routes/itemBorrowed');
 
 
 app.use(express.json());
-// app.use(authentication); //middleware auth
+
 
 app.use('/api/v1/users', userRoutes);
 app.use('/api/v1/user-reviews', userReviewRoutes);

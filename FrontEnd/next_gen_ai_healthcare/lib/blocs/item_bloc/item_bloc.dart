@@ -23,5 +23,20 @@ class ItemBloc extends Bloc<ItemEvent, ItemState> {
         emit(ItemErrorState(error: e.toString()));
       }
     });
+
+    on<ItemSearchRequired>((event, emit) async {
+      emit(ItemLoadingState());
+      try {
+        Result result = await retrieveData.searchItemsNearMe(
+            userLocation: event.location, searchTerm: event.searchTerm);
+        if (result.isSuccess) {
+          emit(ItemSuccessState(items: result.value));
+        } else {
+          emit(ItemErrorState(error: result.error));
+        }
+      } catch (e) {
+        emit(ItemErrorState(error: e.toString()));
+      }
+    });
   }
 }

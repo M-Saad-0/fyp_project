@@ -22,7 +22,7 @@ dependencies {
 android {
     namespace = "com.saadc.next_gen_ai_healthcare"
     compileSdk = flutter.compileSdkVersion
-    ndkVersion = '25.2.9519653'
+    ndkVersion = flutter.ndkVersion
 
     // compileOptions {
     //     sourceCompatibility = JavaVersion.VERSION_1_8

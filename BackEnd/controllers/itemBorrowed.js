@@ -1,46 +1,54 @@
 const ItemBorrowed = require('../models/itemBorrowed');
-const item = require('../models/item');
+const Item = require('../models/item');
 
+const handleError = (res, error, statusCode = 500, message = "Internal Server Error") => {
+  res.status(statusCode).json({
+    code: statusCode,
+    message: message,
+    details: error.message || error,
+  });
+};
 
 exports.getAllBorrowedItems = async (req, res) => {
   try {
     const borrowedItems = await ItemBorrowed.find();
     res.status(200).json(borrowedItems);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    handleError(res, error, 500, "Failed to retrieve borrowed items");
   }
 };
 
+exports.getLentedByUserId = async (req, res) => {
+  try {
+    const lentedItems = await ItemBorrowed.find({ lenderId: req.params.userId });
+    res.status(200).json(lentedItems);
+  } catch (error) {
+    handleError(res, error, 500, "Failed to retrieve lented items");
+  }
+};
 
 exports.getBorrowedByUserId = async (req, res) => {
   try {
-    let borrowedItems;
-    if (req.path.includes('/borrowed/')) {
-      borrowedItems = await ItemBorrowed.find({ borrowerId: req.params.userId });
-    } else if (req.path.includes('/lent/')) {
-      borrowedItems = await ItemBorrowed.find({ lenderId: req.params.userId });
-    } else {
-      return res.status(400).json({ message: 'Invalid path' });
-    }
+    const borrowedItems = await ItemBorrowed.find({ borrowerId: req.params.userId });
     res.status(200).json(borrowedItems);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    handleError(res, error, 500, "Failed to retrieve borrowed items");
   }
 };
-
 
 exports.borrowItem = async (req, res) => {
   try {
     const borrowedItem = new ItemBorrowed(req.body);
     const savedBorrowedItem = await borrowedItem.save();
-    if (!savedBorrowedItem) return res.status(404).json({ message: 'Item not borrowed' });  
-    item.findByIdAndUpdate(req.body.itemId, { isRented: true });
+    if (!savedBorrowedItem) return handleError(res, "Item not borrowed", 404);
+
+    await Item.findByIdAndUpdate(req.body.itemId, { isRented: true });
+
     res.status(201).json(savedBorrowedItem);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    handleError(res, error, 500, "Failed to borrow item");
   }
 };
-
 
 exports.returnItem = async (req, res) => {
   try {
@@ -49,9 +57,11 @@ exports.returnItem = async (req, res) => {
       { returnDate: req.body.returnDate },
       { new: true }
     );
-    if (!updatedBorrowedItem) return res.status(404).json({ message: 'Borrow record not found' });
+
+    if (!updatedBorrowedItem) return handleError(res, "Borrow record not found", 404);
+
     res.status(200).json(updatedBorrowedItem);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    handleError(res, error, 500, "Failed to return item");
   }
 };

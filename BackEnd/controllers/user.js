@@ -2,17 +2,25 @@ const User = require("../models/user");
 const jwt = require('jsonwebtoken');
 const { OAuth2Client } = require('google-auth-library');
 
+const handleError = (res, error, statusCode = 500, message = "Internal Server Error") => {
+  res.status(statusCode).json({
+    code: statusCode,
+    message: message,
+    details: error.message || error,
+  });
+};
+
 exports.createUser = async (req, res) => {
   console.log("Creating User");
   const { userName, email, password, picture, personReputation, location } = req.body;
   try {
     const user = new User({
-      'userName': userName,
-      'email': email,
-      'password': password,
-      'picture': picture,
-      'personReputation': personReputation,
-      'location': location,
+      userName,
+      email,
+      password,
+      picture,
+      personReputation,
+      location,
     });
 
     await user.save();
@@ -21,51 +29,45 @@ exports.createUser = async (req, res) => {
     res.status(201).json(user.toObject());
   } catch (error) {
     console.log(error);
-    res.status(400).send(error);
+    handleError(res, error, 400, "Failed to create user");
   }
 };
 
 exports.getUser = async (req, res) => {
   try {
-    // Find user by userId
     const user = await User.findOne({ userId: req.params.userId });
-    if (!user) return res.status(404).send("User not found");
-    res.send(user); // Sends the user object which includes the location
+    if (!user) return handleError(res, "User not found", 404);
+    res.status(200).json(user);
   } catch (error) {
-    res.status(500).send(error);
+    handleError(res, error, 500, "Failed to retrieve user");
   }
 };
 
 exports.updateUser = async (req, res) => {
   try {
-    // Ensure that location is included in the update if needed
     const updateData = req.body;
-
-    // Check if location is in the body and update it
-    if (req.body.location) {
-      updateData.location = req.body.location;
-    }
+    if (req.body.location) updateData.location = req.body.location;
 
     const user = await User.findOneAndUpdate(
       { userId: req.params.userId },
-      updateData, // Dynamically update fields, including location
+      updateData,
       { new: true }
     );
 
-    if (!user) return res.status(404).send("User not found");
-    res.send(user); // Sends the updated user object
+    if (!user) return handleError(res, "User not found", 404);
+    res.status(200).json(user);
   } catch (error) {
-    res.status(400).send(error);
+    handleError(res, error, 400, "Failed to update user");
   }
 };
 
 exports.deleteUser = async (req, res) => {
   try {
     const user = await User.findOneAndDelete({ userId: req.params.userId });
-    if (!user) return res.status(404).send("User not found");
-    res.send({ message: "User deleted successfully" });
+    if (!user) return handleError(res, "User not found", 404);
+    res.status(200).json({ message: "User deleted successfully" });
   } catch (error) {
-    res.status(500).send(error);
+    handleError(res, error, 500, "Failed to delete user");
   }
 };
 
@@ -74,51 +76,46 @@ exports.loginWithGoogle = async (req, res) => {
     const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
     const ticket = await client.verifyIdToken({
       idToken: req.body.idToken,
-      audience: process.env.GOOGLE_CLIENT_ID
+      audience: process.env.GOOGLE_CLIENT_ID,
     });
 
     const payload = ticket.getPayload();
-
     const { sub: googleId, email, name, picture } = payload;
 
-    let user = await User.findOne({ email: email });
+    let user = await User.findOne({ email });
     if (!user) {
-      const user = new User({
-        'userName': name,
-        'email': email,
-        'password': null,
-        'picture': picture,
+      user = new User({
+        userName: name,
+        email: email,
+        password: null,
+        picture: picture,
       });
       await user.save();
     }
 
-    const jwtToken = jwt.sign({ name: name, email: email }, process.env.JWT_SECRET);
+    const jwtToken = jwt.sign({ name, email }, process.env.JWT_SECRET);
     user.password = jwtToken;
     res.status(201).json(user.toObject());
   } catch (error) {
     console.log(error);
-    res.status(400).send(error);
+    handleError(res, error, 400, "Google login failed");
   }
-
-}
+};
 
 exports.logIn = async (req, res) => {
   const { email, password } = req.body;
   try {
     const user = await User.findOne({ email });
-    if (!user) {
-      return res.status(404).send(`Account with ${email} not found.`);
-    }
+    if (!user) return handleError(res, `Account with ${email} not found`, 404);
 
     const comparePassword = await user.comparePassword(password);
-    if (!comparePassword) {
-      return res.status(404).send('Invalid Credentials');
-    }
+    if (!comparePassword) return handleError(res, "Invalid Credentials", 401);
+
     let token = jwt.sign({ userId: user.userId }, process.env.JWT_SECRET);
     user.password = token;
-    return res.status(201).json(user.toObject());
-  } catch (e) {
-    console.error(e);
-    return res.status(500).json({ 'msg': 'Internal Server Error' });
+    res.status(201).json(user.toObject());
+  } catch (error) {
+    console.error(error);
+    handleError(res, error, 500, "Internal Server Error");
   }
-}
+};

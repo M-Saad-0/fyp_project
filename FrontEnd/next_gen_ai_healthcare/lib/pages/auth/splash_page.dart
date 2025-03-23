@@ -15,7 +15,6 @@ class _SplashPageState extends State<SplashPage> {
   @override
   initState() {
     context.read<AuthBloc>().add(Authenticate());
-
     super.initState();
   }
 
@@ -32,6 +31,8 @@ class _SplashPageState extends State<SplashPage> {
         case AuthLoadingSuccess():
           return const HomePage();
         case AuthError():
+          return const WelcomePage();
+        case AuthLogoutState():
           return const WelcomePage();
         default:
           return const WelcomePage();

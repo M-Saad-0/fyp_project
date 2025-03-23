@@ -22,3 +22,12 @@ class MoreItemsRequired extends ItemEvent{
   @override
   List<Object> get props => [setNo, location];
 }
+
+class ItemSearchRequired extends ItemEvent{
+  final String searchTerm;
+final Map<String, dynamic> location;
+ const ItemSearchRequired({required this.searchTerm, required this.location});
+
+  @override
+  List<Object> get props => [searchTerm];
+}

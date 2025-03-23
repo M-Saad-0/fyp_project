@@ -2,11 +2,10 @@ const Item = require('./../models/item');
 
 const handleError = (res, error, statusCode = 500, message = "Internal Server Error") => {
   res.status(statusCode).json({
-    error: {
-      code: statusCode,
-      message: message,
-      details: error.message || error,
-    },
+    code: statusCode,
+    message: message,
+    details: error.message || error,
+
   });
 };
 
@@ -79,13 +78,13 @@ exports.getItemsNearMe = async (req, res) => {
         $geoNear: {
           near: {
             type: "Point",
-            coordinates: [userLocation.lng, userLocation.lat], 
+            coordinates: [userLocation.lng, userLocation.lat],
           },
-          distanceField: "distance", 
-          spherical: true, 
+          distanceField: "distance",
+          spherical: true,
         },
       },
-      { $skip: skip }, 
+      { $skip: skip },
       { $limit: ITEMS_PER_PAGE },
     ]);
 

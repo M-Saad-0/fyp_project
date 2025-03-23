@@ -1,5 +1,4 @@
 import 'dart:ui';
-import 'package:backend_services_repository/backend_service_repositoy.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:next_gen_ai_healthcare/blocs/auth_bloc/auth_bloc.dart';
@@ -7,6 +6,7 @@ import 'package:next_gen_ai_healthcare/blocs/sign_in_bloc/sign_in_bloc.dart';
 import 'package:next_gen_ai_healthcare/blocs/sign_up/sign_up_bloc.dart';
 import 'package:next_gen_ai_healthcare/pages/auth/sign_in_page.dart';
 import 'package:next_gen_ai_healthcare/pages/auth/sign_up_page.dart';
+import 'package:next_gen_ai_healthcare/pages/auth/splash_page.dart';
 import 'package:next_gen_ai_healthcare/widgets/show_toast.dart';
 
 class WelcomePage extends StatefulWidget {
@@ -146,40 +146,32 @@ class _WelcomePageState extends State<WelcomePage>
                     const SizedBox(
                       height: 25,
                     ),
-                    BlocListener<AuthBloc, AuthState>(
-                      listener: (context, state) {
-                        if (state is GoogleAuthFailed) {
-                          showToastMessage("Google Login canceled.");
-                        } else if (state is AuthLoadingSuccess) {
-                          context.read<AuthBloc>().add(Authenticate());
-                        }
-                      },
-                      child: GestureDetector(
-                          onTap: () async {
-                            context.read<AuthBloc>().add(GoogleAuthRequired());
-                          },
-                          child: Container(
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(20),
-                                  border: Border.all(
-                                      width: 2,
-                                      color: Theme.of(context).primaryColor)),
-                              padding: const EdgeInsets.symmetric(
-                                  vertical: 10, horizontal: 20),
-                              child: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Image.asset(
-                                    "assets/images/google_logo.png",
-                                    height: 25,
-                                  ),
-                                  const SizedBox(
-                                    width: 10,
-                                  ),
-                                  const Text("Sign in with Google"),
-                                ],
-                              ))),
-                    )
+                    GestureDetector(
+                        onTap: () async {
+                          context.read<AuthBloc>().add(GoogleAuthRequired());
+                          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>const SplashPage()));
+                        },
+                        child: Container(
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(20),
+                                border: Border.all(
+                                    width: 2,
+                                    color: Theme.of(context).primaryColor)),
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 10, horizontal: 20),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Image.asset(
+                                  "assets/images/google_logo.png",
+                                  height: 25,
+                                ),
+                                const SizedBox(
+                                  width: 10,
+                                ),
+                                const Text("Sign in with Google"),
+                              ],
+                            )))
                   ],
                 ),
               ),

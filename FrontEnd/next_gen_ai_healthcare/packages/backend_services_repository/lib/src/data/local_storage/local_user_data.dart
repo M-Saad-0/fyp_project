@@ -1,57 +1,40 @@
+import 'package:hive/hive.dart';
 import 'package:backend_services_repository/backend_service_repositoy.dart';
-import 'package:sqflite/sqflite.dart';
+import 'package:backend_services_repository/src/models/user/entities/entities.dart';
 
 class LocalUserData {
   static final LocalUserData _instance = LocalUserData._internal();
-  factory LocalUserData(){
-    return _instance;
-  }
+  factory LocalUserData() => _instance;
   LocalUserData._internal();
-   final SqlHelper _sqlHelper = SqlHelper();
-  Future<void> insertUser(User user) async {
-    final db = await _sqlHelper.database;
-    Map<String, dynamic> map = {
-      'id': user.userId,
-      'name': user.userName,
-      'email': user.email,
-      'token': user.password,
-      'image': user.picture
-    };
-    int a = await db.insert('user', map, conflictAlgorithm: ConflictAlgorithm.replace);
-    print(a);
+
+  /// Ensure Hive is initialized before using this class
+  Future<void> _openBox() async {
+    if (!Hive.isBoxOpen('user')) {
+      await Hive.openBox<User>('user');
+    }
   }
 
-  Future<bool> checkUser() async {
-    final db = await _sqlHelper.database;
-    try {
-      Map<String, dynamic> user = (await db.query('user', limit: 1))[0];
-      if (user['name'].isNotEmpty) {
-        return true;
-      } else {
-        return false;
-      }
-    } catch (e) {
-      return false;
-    }
+  Future<void> insertUser(User user) async {
+    await _openBox();
+    final box = Hive.box<User>('user');
+    await box.put('user', user);
   }
-  
-  Future<Map<String, dynamic>> getUser()async{
-    final db = await _sqlHelper.database;
-    try {
-      Map<String, dynamic> user = (await db.query('user', limit: 1))[0];
-      if (user['name'].isNotEmpty) {
-        return user;
-      } else {
-        return {};
-      }
-    } catch (e) {
-        print("********************************************");
-      return {};
-    }
+
+  bool checkUser() {
+    final box = Hive.box<User>('user');
+    final user = box.get('user');
+    return user != null && user.password.isNotEmpty;
+  }
+
+  User? getUser() {
+    final box = Hive.box<User>('user');
+    final user = box.get('user');
+    return user;
   }
 
   Future<void> clearUserTable() async {
-    final db = await _sqlHelper.database;
-    await db.delete('user');
+    await _openBox();
+    final box = Hive.box<User>('user');
+    await box.delete('user');
   }
 }

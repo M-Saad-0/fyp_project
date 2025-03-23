@@ -1,11 +1,10 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:backend_services_repository/src/data/api.dart';
-import 'package:backend_services_repository/src/data/store_data/store_data.dart';
-import 'package:backend_services_repository/src/item/entities/entities.dart';
-import 'package:backend_services_repository/src/item/models/item.dart';
-import 'package:backend_services_repository/src/result_wraper.dart';
+
+
+import 'package:backend_services_repository/backend_service_repositoy.dart';
+import 'package:backend_services_repository/src/models/item/entities/entities.dart';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';

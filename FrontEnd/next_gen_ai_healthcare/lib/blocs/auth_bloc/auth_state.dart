@@ -17,3 +17,5 @@ final class AuthLoadingSuccess extends AuthState {
   List<Object> get props =>[];
 }
 final class AuthError extends AuthState {}
+final class AuthLogoutState extends AuthState {}
+final class AuthLogOutLoading extends AuthState {}
