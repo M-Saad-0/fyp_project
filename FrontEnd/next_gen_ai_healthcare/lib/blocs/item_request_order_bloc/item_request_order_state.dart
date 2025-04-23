@@ -11,7 +11,15 @@ final class ItemRequestOrderInitial extends ItemRequestOrderState {}
 final class ItemRequestOrderLoading extends ItemRequestOrderState {}
 final class ItemRequestOrderSuccess extends ItemRequestOrderState {
   final List<Item> items;
-  const ItemRequestOrderSuccess({required this.items});
+  final List<Map<String, dynamic>> itemDocs;
+  const ItemRequestOrderSuccess({required this.itemDocs, required this.items});
   @override
-  List<Object> get props => [items];
+  List<Object> get props => [items, itemDocs];
+}
+
+final class ItemRequestOrderError extends ItemRequestOrderState {
+  final String errorMessage;
+  const ItemRequestOrderError({required this.errorMessage});
+  @override
+  List<Object> get props => [errorMessage];
 }

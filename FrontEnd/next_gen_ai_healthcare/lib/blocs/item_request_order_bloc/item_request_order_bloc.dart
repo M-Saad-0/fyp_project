@@ -5,17 +5,37 @@ import 'package:equatable/equatable.dart';
 part 'item_request_order_event.dart';
 part 'item_request_order_state.dart';
 
-class ItemRequestOrderBloc extends Bloc<ItemRequestOrderEvent, ItemRequestOrderState> {
+class ItemRequestOrderBloc
+    extends Bloc<ItemRequestOrderEvent, ItemRequestOrderState> {
   final OrderAndPaymentImp orderAndPaymentImp;
-  ItemRequestOrderBloc({required this.orderAndPaymentImp}) : super(ItemRequestOrderInitial()) {
-    on<ItemOrderRequired>((event, emit) async{
-      List<Item> items =await orderAndPaymentImp.getItemsUserOrdered(event.user);
-      emit(ItemRequestOrderSuccess(items: items));
+  ItemRequestOrderBloc({required this.orderAndPaymentImp})
+      : super(ItemRequestOrderInitial()) {
+    on<ItemOrderRequired>((event, emit) async {
+      Result<Map<String, dynamic>, String> items =
+          await orderAndPaymentImp.getItemsUserOrdered(event.user);
+      if (items.isFailure) {
+        emit(ItemRequestOrderError(errorMessage: items.error!));
+      } else {
+        emit(ItemRequestOrderSuccess(
+            items: (items.value!['items'] as List)
+                .map((item) => Item.fromEntity(ItemEntity.fromJson(item)))
+                .toList(),
+            itemDocs: items.value!['itemDocs']));
+      }
     });
 
-    on<ItemRequestRequired>((event, emit) async{
-      List<Item> items =await orderAndPaymentImp.getItemsUserOrdered(event.user);
-      emit(ItemRequestOrderSuccess(items: items));
+    on<ItemRequestRequired>((event, emit) async {
+      Result<Map<String, dynamic>, String> items =
+          await orderAndPaymentImp.getOrderRequest(event.user);
+      if (items.isFailure) {
+        emit(ItemRequestOrderError(errorMessage: items.error!));
+      } else {
+        emit(ItemRequestOrderSuccess(
+            items: (items.value!['items'] as List)
+                .map((item) => Item.fromEntity(ItemEntity.fromJson(item)))
+                .toList(),
+            itemDocs: items.value!['itemDocs']));
+      }
     });
   }
 }

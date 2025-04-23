@@ -93,3 +93,33 @@ exports.getItemsNearMe = async (req, res) => {
     handleError(res, error, 500, "Failed to fetch items near you");
   }
 };
+
+
+exports.searchItems = async (req, res) => {
+  try {
+    const searchTerm = req.query.query;
+    const longitude = parseFloat(req.query.longitude);
+    const latitude = parseFloat(req.query.latitude);
+
+    if (!searchTerm) return handleError(res, null, 400, "No search term provided");
+
+    const items = await Item.find({
+      itemName: { $regex: searchTerm, $options: "i" }, 
+      location: {
+        $near: {
+          $geometry: {
+            type: "Point",
+            coordinates: [longitude, latitude],
+          },
+          $maxDistance: 10000, 
+        },
+      },
+    });
+
+    if (!items.length) return handleError(res, null, 404, "No medical equipment found");
+
+    res.status(200).json(items);
+  } catch (error) {
+    handleError(res, error, 500, "Failed to search items");
+  }
+};

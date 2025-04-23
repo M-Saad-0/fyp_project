@@ -28,7 +28,7 @@ class AuthenticationImp extends Authentication {
   @override
   Future<Result<User, String>> createAnAccount(
       {required User user, required String password}) async {
-    Uri url = Uri.parse("$api/users/register");
+   try { Uri url = Uri.parse("$api/users/register");
     Map<String, dynamic> toSend = UserEntity.toJson(User.toEntity(user));
     toSend['password'] = password;
 
@@ -49,6 +49,8 @@ class AuthenticationImp extends Authentication {
     } else {
       return Result.failure('');
       // return Result.failure('An unexpected error occurred.');
+    }} catch (e){
+      return Result.failure(e.toString());
     }
   }
 

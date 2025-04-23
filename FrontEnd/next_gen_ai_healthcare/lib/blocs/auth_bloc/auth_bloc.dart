@@ -42,11 +42,21 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           await GoogleSignInAuth.logOut();
         } else {
           final account = await GoogleSignInAuth.login();
+
           print("$account");
+      Map<String, dynamic> userLocation =
+          await LocationServicesImp().getLocation();
           final user = User(
               userId: account!.id,
               userName: account.displayName ?? "",
               email: account.email,
+              location: {
+                'type': "Point",
+                "coordinates": [
+                  userLocation['longitude'],
+                  userLocation['latitude'],
+                ]
+              },
               picture: account.photoUrl ?? "");
           final googleAuntentication = await account.authentication;
           print("${googleAuntentication.idToken}");

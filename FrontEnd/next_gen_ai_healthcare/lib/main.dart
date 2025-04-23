@@ -40,7 +40,7 @@ class MyApp extends StatelessWidget {
                 AuthBloc(authentication: context.read<AuthenticationImp>()),
           ),
           BlocProvider<ThemeBloc>(
-            create: (context) => ThemeBloc(),
+            create: (context) => ThemeBloc(LocalThemeData()),
           ),
         ],
         child: BlocBuilder<ThemeBloc, ThemeState>(

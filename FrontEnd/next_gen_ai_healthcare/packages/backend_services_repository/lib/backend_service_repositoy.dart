@@ -18,3 +18,6 @@ export './src/models/chats.dart';
 export './src/utils/chat_repository_imp.dart';
 export './src/utils/chat_request_imp.dart';
 export "package:hive_flutter/hive_flutter.dart";
+export './src/utils/location_services.dart';
+export './src/models/item/entities/entities.dart';
+export './src/models/review_model.dart';

@@ -1,6 +1,7 @@
 import 'package:backend_services_repository/backend_service_repositoy.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/foundation.dart';
 import 'package:next_gen_ai_healthcare/blocs/auth_bloc/auth_bloc.dart';
 
 part 'sign_in_event.dart';
@@ -19,9 +20,11 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
           emit(SignInSuccess(user: result.value));
           authBloc.add(Authenticate());
         } else {
+          debugPrint(result.error);
           emit(SignInError(error: result.error));
         }
       } catch (e) {
+          debugPrint("An Unexpected error has occurred");
         emit(const SignInError(error: "An Unexpected error has occurred"));
       }
     });

@@ -1,4 +1,5 @@
 const ItemReviews = require('../models/itemReview');
+const User = require("../models/user");
 
 const handleError = (res, error, statusCode = 500, message = "Internal Server Error") => {
   res.status(statusCode).json({
@@ -20,7 +21,8 @@ exports.getAllReviews = async (req, res) => {
 exports.getReviewsByItemId = async (req, res) => {
   try {
     const reviews = await ItemReviews.find({ itemId: req.params.itemId });
-    res.status(200).json(reviews);
+    const users = await User.find({ userId: { $in: reviews.map(review => review.userId)}})
+    res.status(200).json({ reviews, users });
   } catch (error) {
     handleError(res, error, 500, "Failed to retrieve reviews for the item");
   }

@@ -53,7 +53,7 @@ class _SignUpPageState extends State<SignUpPage> {
               break;
             }
           default:
-            // debugPrint("Normal Life");
+          // debugPrint("Normal Life");
         }
         return SingleChildScrollView(
           child: Form(
@@ -175,27 +175,21 @@ class _SignUpPageState extends State<SignUpPage> {
                             style: TextStyle(
                                 color: containsUpperCase
                                     ? Theme.of(context).primaryColor
-                                    : Theme.of(context)
-                                        .colorScheme
-                                        .onSurface),
+                                    : Theme.of(context).colorScheme.onSurface),
                           ),
                           Text(
                             "⚈  1 lowercase",
                             style: TextStyle(
                                 color: containsLowerCase
                                     ? Theme.of(context).primaryColor
-                                    : Theme.of(context)
-                                        .colorScheme
-                                        .onSurface),
+                                    : Theme.of(context).colorScheme.onSurface),
                           ),
                           Text(
                             "⚈  1 number",
                             style: TextStyle(
                                 color: containsNumber
                                     ? Theme.of(context).primaryColor
-                                    : Theme.of(context)
-                                        .colorScheme
-                                        .onSurface),
+                                    : Theme.of(context).colorScheme.onSurface),
                           ),
                         ],
                       ),
@@ -207,18 +201,14 @@ class _SignUpPageState extends State<SignUpPage> {
                             style: TextStyle(
                                 color: containsSpecialChar
                                     ? Theme.of(context).primaryColor
-                                    : Theme.of(context)
-                                        .colorScheme
-                                        .onSurface),
+                                    : Theme.of(context).colorScheme.onSurface),
                           ),
                           Text(
                             "⚈  8 minimum character",
                             style: TextStyle(
                                 color: contains8Length
                                     ? Theme.of(context).primaryColor
-                                    : Theme.of(context)
-                                        .colorScheme
-                                        .onSurface),
+                                    : Theme.of(context).colorScheme.onSurface),
                           ),
                         ],
                       ),
@@ -247,13 +237,22 @@ class _SignUpPageState extends State<SignUpPage> {
                       ? SizedBox(
                           width: MediaQuery.of(context).size.width * 0.5,
                           child: ElevatedButton(
-                              onPressed: () {
+                              onPressed: () async {
                                 if (_formKey.currentState!.validate()) {
+                                  Map<String, dynamic> userLocation =
+                                      await LocationServicesImp().getLocation();
+
                                   User myUser = User(
                                       userId: "",
                                       userName: nameController.text,
-                                      email: emailController.text);
-
+                                      email: emailController.text,
+                                      location: {
+                                        'type': "Point",
+                                        "coordinates": [
+                                          userLocation['longitude'],
+                                          userLocation['latitude'],
+                                        ]
+                                      });
                                   setState(() {
                                     context.read<SignUpBloc>().add(
                                         SignUpRequired(

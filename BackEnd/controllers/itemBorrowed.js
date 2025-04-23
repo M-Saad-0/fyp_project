@@ -21,7 +21,11 @@ exports.getAllBorrowedItems = async (req, res) => {
 exports.getLentedByUserId = async (req, res) => {
   try {
     const lentedItems = await ItemBorrowed.find({ lenderId: req.params.userId });
-    res.status(200).json(lentedItems);
+    let itemObjects = await Promise.all(lentedItems.map(async (lentedItem) => {
+      return await Item.findById(lentedItem.itemId)
+    })
+)
+    res.json(200, {itemObjects, lentedItems});
   } catch (error) {
     handleError(res, error, 500, "Failed to retrieve lented items");
   }
@@ -30,7 +34,11 @@ exports.getLentedByUserId = async (req, res) => {
 exports.getBorrowedByUserId = async (req, res) => {
   try {
     const borrowedItems = await ItemBorrowed.find({ borrowerId: req.params.userId });
-    res.status(200).json(borrowedItems);
+    let itemObjects = await Promise.all(borrowedItems.map(async (borrowedItem) => {
+      return await Item.findById(borrowedItem.itemId)
+    })
+)
+    res.json(200, {itemObjects, borrowedItems}); 
   } catch (error) {
     handleError(res, error, 500, "Failed to retrieve borrowed items");
   }
@@ -39,6 +47,7 @@ exports.getBorrowedByUserId = async (req, res) => {
 exports.borrowItem = async (req, res) => {
   try {
     const borrowedItem = new ItemBorrowed(req.body);
+    console.log("Here we arre", borrowedItem);
     const savedBorrowedItem = await borrowedItem.save();
     if (!savedBorrowedItem) return handleError(res, "Item not borrowed", 404);
 

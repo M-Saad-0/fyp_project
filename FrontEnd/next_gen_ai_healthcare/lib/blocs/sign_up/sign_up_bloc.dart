@@ -21,10 +21,11 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
           emit(SignUpSuccess(user: result.value));
           authBloc.add(Authenticate());
         } else {
-          debugPrint("Not Adding AuthEvent");
+          debugPrint(result.error);
           emit(SignUpError(error: result.error));
         }
       } catch (e) {
+          debugPrint("An Unexpected error has occurred");
         emit(const SignUpError(error: "An Unexpected error has occurred"));
       }
     });
