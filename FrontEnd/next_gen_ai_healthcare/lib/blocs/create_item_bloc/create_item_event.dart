@@ -15,4 +15,9 @@ class CreateItemRequiredEvent extends CreateItemEvent{
   @override 
   List<Object> get props => [item, imagePaths, userId];
 }
-class CreateItemLoadImagesEvent extends CreateItemEvent{}
+class CreateItemLoadImagesEvent extends CreateItemEvent{
+  final List<String> previousImages;
+  const CreateItemLoadImagesEvent({required this.previousImages});
+  @override 
+  List<Object> get props => [previousImages];
+}

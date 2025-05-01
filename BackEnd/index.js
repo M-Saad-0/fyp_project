@@ -9,6 +9,7 @@ const itemRoutes = require('./routes/item');
 const itemReviewRoutes = require('./routes/itemReview');
 const userLocationRoutes = require('./routes/userLocation');
 const itemBorrowedRoutes = require('./routes/itemBorrowed');
+const wishlistRoutes = require('./routes/wishlist');
 
 
 app.use(express.json());
@@ -20,6 +21,8 @@ app.use('/api/v1/items', itemRoutes);
 app.use('/api/v1/item-reviews', itemReviewRoutes);
 app.use('/api/v1/user-locations', userLocationRoutes);
 app.use('/api/v1/borrowed-items', itemBorrowedRoutes);
+app.use('/api/v1/wishlist', wishlistRoutes);
+// app.use('/api/v1/payment-gateway', );
 
 
 const PORT = process.env.PORT || 4000;

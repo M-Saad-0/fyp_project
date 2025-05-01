@@ -13,3 +13,12 @@ final class FetchReviewEvent extends ReviewEvent {
   @override
   List<Object> get props => [itemId];
 }
+
+final class AddReviewEvent extends ReviewEvent {
+  final Map<String, dynamic> itemBorrowed;
+  final String review;
+  final double rating;
+  const AddReviewEvent({required this.review, required this.itemBorrowed, required this.rating});
+  @override
+  List<Object> get props => [itemBorrowed, review, rating];
+}

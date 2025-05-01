@@ -17,90 +17,85 @@ class ItemWidget extends StatelessWidget {
     required this.sold,
     required this.rating,
     required this.description,
-    required this.onTap
+    required this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final imageUrl = images.isNotEmpty
+        ? images[0]
+        : 'https://www.accu-chek.com.pk/sites/g/files/iut956/f/styles/image_300x400/public/media_root/product_media_files/product_images/active-mgdl-300x400.png?itok=bgvuYJFy';
+
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        height: 377,
         width: 150,
         decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.surface,
-          borderRadius: const BorderRadius.all(Radius.circular(5)),
+          color: theme.colorScheme.surface,
+          borderRadius: BorderRadius.circular(8),
           border: Border.all(
-            width: 2,
-            color: Theme.of(context).primaryColor.withOpacity(.2),
+            width: 1.5,
+            color: theme.primaryColor.withOpacity(0.2),
           ),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
-              height: 119,
-              decoration:  BoxDecoration(
-                image:  DecorationImage(
-                  fit:BoxFit.contain,
-                  image: NetworkImage(
-                    
-                    images.isEmpty?"https://www.accu-chek.com.pk/sites/g/files/iut956/f/styles/image_300x400/public/media_root/product_media_files/product_images/active-mgdl-300x400.png?itok=bgvuYJFy":images[0]), 
-                ),
-                borderRadius: const BorderRadius.vertical(top: Radius.circular(5)),
+            ClipRRect(
+              borderRadius: const BorderRadius.vertical(top: Radius.circular(8)),
+              child: Image.network(
+                imageUrl,
+                height: 120,
+                width: double.infinity,
+                fit: BoxFit.contain,
               ),
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Text(
-                title,
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 14,
-                    ),
-              ),
-            ),
-            
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8.0),
-              child: Text(
-                seller, 
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      fontSize: 12,
-                      color: Theme.of(context).colorScheme.onSurfaceVariant,
-                    ),
-              ),
-            ),
-            
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8.0),
-              child: Text(
-                '$sold sold', 
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      fontSize: 12,
-                      color: Theme.of(context).colorScheme.onSurfaceVariant,
-                    ),
-              ),
-            ),
-           
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8.0),
-              child: Row(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                   Icon(
-                    Icons.star,
-                    color: Theme.of(context).primaryColor,
-                    size: 16,
-                  ),
-                  const SizedBox(width: 4),
                   Text(
-                    "$rating",
-                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    title,
+                    // maxLines: 2,
+                    // overflow: TextOverflow.ellipsis,
+                    // style: theme.textTheme.bodyMedium?.copyWith(
+                    //   fontWeight: FontWeight.bold,
+                    //   fontSize: 14,
+                    // ),
+                  ),
+                  Row(children: [Text(
+                    seller,
+                    style: theme.textTheme.bodySmall?.copyWith(
+                      fontSize: 12,
+                      color: theme.colorScheme.onSurfaceVariant,
+                    ),
+                  ),
+                  const Spacer(),
+                  Text(
+                    '$sold sold',
+                    style: theme.textTheme.bodySmall?.copyWith(
+                      fontSize: 12,
+                      color: theme.colorScheme.onSurfaceVariant,
+                    ),
+                  ),],),
+                  Row(
+                    children: [
+                      Icon(
+                        Icons.star,
+                        color: theme.primaryColor,
+                        size: 16,
+                      ),
+                      const SizedBox(width: 4),
+                      Text(
+                        rating.toStringAsFixed(1),
+                        style: theme.textTheme.bodySmall?.copyWith(
                           fontSize: 12,
-                          color: Theme.of(context).colorScheme.onSurfaceVariant,
+                          color: theme.colorScheme.onSurfaceVariant,
                         ),
+                      ),
+                    ],
                   ),
                 ],
               ),

@@ -10,7 +10,7 @@ part 'theme_state.dart';
 class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
   final LocalThemeData localThemeData;
   ThemeBloc(this.localThemeData) : super(ThemeDarkState(theme: AppThemes.darkTheme)) {
-    _loadThemeData();
+    
     on<ThemeToggleLightEvent>((event, emit) {
       localThemeData.storeTheme('light');
       emit(ThemeLightState(theme: AppThemes.lightTheme));
@@ -19,6 +19,7 @@ class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
       localThemeData.storeTheme('dark');
       emit(ThemeDarkState(theme: AppThemes.darkTheme));
     });
+    _loadThemeData();
   }
   Future<void> _loadThemeData() async {
     bool isLight = localThemeData.getTheme();

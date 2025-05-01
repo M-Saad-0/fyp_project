@@ -37,7 +37,10 @@ class _ItemPaymentPageState extends State<ItemPaymentPage> {
                   child: CircularProgressIndicator(),
                 );
                 textToShow = const Text("Loading your order...");
-                iconToShow = const Icon(Icons.access_time_sharp, color: Colors.amberAccent,);
+                iconToShow = const Icon(
+                  Icons.access_time_sharp,
+                  color: Colors.amberAccent,
+                );
               }
             case ItemOrderSuccess():
               {
@@ -46,7 +49,10 @@ class _ItemPaymentPageState extends State<ItemPaymentPage> {
                   child: Text(state.success),
                 );
                 textToShow = const Text("Order successful");
-                iconToShow = const Icon(Icons.check_circle_outline_outlined, color: Colors.greenAccent,);
+                iconToShow = const Icon(
+                  Icons.check_circle_outline_outlined,
+                  color: Colors.greenAccent,
+                );
               }
             case ItemOrderError():
               {
@@ -55,8 +61,10 @@ class _ItemPaymentPageState extends State<ItemPaymentPage> {
                   child: Text(state.error),
                 );
                 textToShow = const Text("Order failed");
-              iconToShow = const Icon(Icons.error, color: Colors.redAccent,);
-
+                iconToShow = const Icon(
+                  Icons.error,
+                  color: Colors.redAccent,
+                );
               }
           }
           showDialog(
@@ -65,16 +73,16 @@ class _ItemPaymentPageState extends State<ItemPaymentPage> {
                 return AlertDialog(
                   title: textToShow,
                   content: SingleChildScrollView(
-                  child: widgetToShow,
+                    child: widgetToShow,
                   ),
                   icon: iconToShow,
                   actions: [
-                  TextButton(
-                    onPressed: () {
-                    Navigator.of(context).pop();
-                    },
-                    child: const Text("Close"),
-                  ),
+                    TextButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      child: const Text("Close"),
+                    ),
                   ],
                 );
               });
@@ -124,6 +132,10 @@ class _ItemPaymentPageState extends State<ItemPaymentPage> {
                             item: widget.item,
                             user: user,
                             paymentMethod: selectedPaymentOption));
+                    Navigator.of(context).pop();
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text("Payment successful")),
+                    );
                   },
                   child: const Text("Proceed")),
               const SizedBox(height: 16),

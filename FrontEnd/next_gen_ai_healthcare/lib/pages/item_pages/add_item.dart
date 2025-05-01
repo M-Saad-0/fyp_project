@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:backend_services_repository/backend_service_repositoy.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -89,44 +91,50 @@ class _AddItemState extends State<AddItem> {
                       ),
                      
                       const SizedBox(height: 16),
-                      // TextButton(
-                      //   onPressed: () {
-                      //     context
-                      //         .read<CreateItemBloc>()
-                      //         .add(CreateItemLoadImagesEvent());
-                      //   },
-                      //   child: const Text('Pick Images'),
-                      // ),
-                      // const SizedBox(height: 16),
-                      // const Text('Selected Images:'),
-                      // BlocBuilder<CreateItemBloc, CreateItemState>(
-                      //   builder: (context, state) {
-                      //     if (state is CreateItemLoadImages) {
-                      //       images = state.images;
-                      //       return SizedBox(
-                      //         height: 100,
-                      //         child: ListView.builder(
-                      //           scrollDirection: Axis.horizontal,
-                      //           itemCount: images!.length,
-                      //           itemBuilder: (context, index) {
-                      //             return Padding(
-                      //               padding: const EdgeInsets.all(8.0),
-                      //               child: Image.file(
-                      //                 File(images![index]),
-                      //                 width: 100,
-                      //                 height: 100,
-                      //                 fit: BoxFit.cover,
-                      //               ),
-                      //             );
-                      //           },
-                      //         ),
-                      //       );
-                      //     } else {
-                      //       return const SizedBox();
-                      //     }
-                      //   },
-                      // ),
-                      // const SizedBox(height: 16),
+                      TextButton(
+                        onPressed: () {
+                         
+                          
+                          context
+                              .read<CreateItemBloc>()
+                              .add(CreateItemLoadImagesEvent(previousImages: images??[]));
+                        },
+                        child: const Text('Pick Images'),
+                      ),
+                      BlocBuilder<CreateItemBloc, CreateItemState>(
+                        builder: (context, state) {
+                          if (state is CreateItemLoadImages) {
+                            images = state.images;
+                            return Column(
+                              children: [
+                      const SizedBox(height: 16),
+                      const Text('Selected Images:'),
+                                SizedBox(
+                                  height: 100,
+                                  child: ListView.builder(
+                                    scrollDirection: Axis.horizontal,
+                                    itemCount: images!.length,
+                                    itemBuilder: (context, index) {
+                                      return Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Image.file(
+                                          File(images![index]),
+                                          width: 100,
+                                          height: 100,
+                                          fit: BoxFit.cover,
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                ),
+                              ],
+                            );
+                          } else {
+                            return const SizedBox();
+                          }
+                        },
+                      ),
+                      const SizedBox(height: 16),
                       ElevatedButton(
                         onPressed: () {
                           final authState = context.read<AuthBloc>().state
@@ -142,7 +150,7 @@ class _AddItemState extends State<AddItem> {
                                         description:
                                             _descriptionController.text,
                                         // images: images!,
-                                        images: ["https://www.accu-chek.com.pk/sites/g/files/iut956/f/styles/image_300x400/public/media_root/product_media_files/product_images/active-mgdl-300x400.png?itok=bgvuYJFy"],
+                                        images: images??[],
                                         location: {},
                                         seller: authState.user.userName,
                                         sold: 0,
@@ -151,7 +159,7 @@ class _AddItemState extends State<AddItem> {
                                         isRented: false
                                         ),
                                     // imagePaths: images!
-                                        imagePaths: const ["https://www.accu-chek.com.pk/sites/g/files/iut956/f/styles/image_300x400/public/media_root/product_media_files/product_images/active-mgdl-300x400.png?itok=bgvuYJFy"],
+                                        imagePaths: images??[],
                                         
                                     ));
                           }

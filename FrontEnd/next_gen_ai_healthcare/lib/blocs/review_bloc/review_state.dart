@@ -24,3 +24,4 @@ final class ReviewError extends ReviewState {
   @override
   String toString() => 'ReviewError { error: $error }';
 }
+final class ReviewUploadSuccess extends ReviewState{}

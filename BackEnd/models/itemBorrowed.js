@@ -24,5 +24,6 @@ const itemBorrowedSchema = new mongoose.Schema({
   returnDate: { type: Date },
 });
 
+// requestStatus can be 'pending', 'accepted', 'rejected', 'completed', 'returning', 'returned'
 
 module.exports = mongoose.model('ItemBorrowed', itemBorrowedSchema);

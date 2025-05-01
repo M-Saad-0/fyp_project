@@ -144,7 +144,8 @@ class _ItemPageState extends State<ItemPage> {
                                     MaterialPageRoute(
                                         builder: (context) => BlocProvider<ReviewBloc>(
                                               create: (context) =>
-                                                  ReviewBloc(retrieveData: RetrieveDataImp()),
+                                                  ReviewBloc(reviewOps: ReviewOps())
+                                                  ..add(FetchReviewEvent(itemId: state.items[index].itemId)),
                                               child: ItemDetailPage(
                                                   item: state.items[index]),
                                             )));

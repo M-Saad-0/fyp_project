@@ -74,3 +74,29 @@ exports.returnItem = async (req, res) => {
     handleError(res, error, 500, "Failed to return item");
   }
 };
+
+exports.updatedBorrowedItem = async(req, res) => {
+  try{
+    const toUpdate = await ItemBorrowed.findByIdAndUpdate(req.params.id, req.body, {new: true});
+    if(toUpdate.requestStatus === "Reviewed"){
+      await Item.findByIdAndUpdate(toUpdate.itemId, {isRented: false});
+    } 
+    if (!toUpdate) return handleError(res, "Borrow record not found", 404);
+  }catch (error) {
+    handleError(res, error, 500, "Failed to update borrowed item");
+  }
+};
+
+exports.deleteItemBorrowed = async (req, res) => {
+  try {
+    const deletedItemBorrowed = await ItemBorrowed.findByIdAndDelete(req.params.id);
+    if (!deletedItemBorrowed) return handleError(res, "Borrow record not found", 404);
+
+    await Item.findByIdAndUpdate(deletedItemBorrowed.itemId, { isRented: false });
+
+    res.status(200).json({ message: 'Borrow record deleted' });
+  } catch (error) {
+    handleError(res, error, 500, "Failed to delete borrowed item");
+  }
+};
+

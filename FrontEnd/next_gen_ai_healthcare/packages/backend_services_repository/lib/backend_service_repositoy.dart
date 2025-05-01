@@ -21,3 +21,5 @@ export "package:hive_flutter/hive_flutter.dart";
 export './src/utils/location_services.dart';
 export './src/models/item/entities/entities.dart';
 export './src/models/review_model.dart';
+export "src/data/review_wishlist/review_ops.dart";
+export "src/data/review_wishlist/wishlist_ops.dart";
