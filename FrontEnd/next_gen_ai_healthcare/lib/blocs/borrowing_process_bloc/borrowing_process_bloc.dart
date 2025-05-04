@@ -40,7 +40,7 @@ class BorrowingProcessBloc
       Map<String, dynamic> itemBorrowed = event.itemBorrowed;
         itemBorrowed['requestStatus'] = RequestStatuses.Reviewed.name;
       Result<bool, String> result =
-            await orderAndPaymentImp.updateBorrowedItem(event.itemBorrowed);
+            await orderAndPaymentImp.updateBorrowedItem(itemBorrowed);
     });
     
   }

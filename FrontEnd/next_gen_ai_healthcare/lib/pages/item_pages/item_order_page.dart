@@ -5,6 +5,7 @@ import 'package:flutter_rating/flutter_rating.dart';
 import 'package:next_gen_ai_healthcare/blocs/borrowing_process_bloc/borrowing_process_bloc.dart';
 import 'package:next_gen_ai_healthcare/blocs/item_request_order_bloc/item_request_order_bloc.dart';
 import 'package:next_gen_ai_healthcare/blocs/review_bloc/review_bloc.dart';
+import 'package:next_gen_ai_healthcare/pages/item_pages/location_map_page.dart';
 import 'package:next_gen_ai_healthcare/pages/item_pages/review_item.dart';
 
 class ItemOrderPage extends StatefulWidget {
@@ -69,18 +70,29 @@ class _ItemOrderPageState extends State<ItemOrderPage> {
                           }
                           return Card(
                             child: ListTile(
+                                onTap: () {
+                                  showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        return LocationMapPage(
+                                            itemLocation:
+                                                state.items[index].location,
+                                            userLocation: widget.user.location!,
+                                            itemId: state.items[index].itemId);
+                                      });
+                                },
                                 title: Text(item.itemName),
                                 subtitle: Text("${item.price} RS"),
-                                leading: Image(
-                                    image: NetworkImage(item.images[0])),
+                                leading:
+                                    Image(image: NetworkImage(item.images[0])),
                                 trailing: Row(
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
                                     (requestStatusState
                                             is BorrowingProcessSuccessState)
                                         ? Text(
-                                            requestStatusState.borrowedItem[
-                                                'requestStatus'],
+                                            requestStatusState
+                                                .borrowedItem['requestStatus'],
                                             style: TextStyle(color: color),
                                           )
                                         : Text(
@@ -130,18 +142,20 @@ class _ItemOrderPageState extends State<ItemOrderPage> {
                                                     return <PopupMenuItem>[
                                                       PopupMenuItem(
                                                           onTap: () {
-                                                            context.read<BorrowingProcessBloc>().add(BorrowingProcessActionEvent(
-                                                                itemBorrowed:
-                                                                    itemDocs,
-                                                                newRequestStatus:
-                                                                    RequestStatuses
-                                                                        .Returing
-                                                                        .name));
+                                                            context
+                                                                .read<
+                                                                    BorrowingProcessBloc>()
+                                                                .add(BorrowingProcessActionEvent(
+                                                                    itemBorrowed:
+                                                                        itemDocs,
+                                                                    newRequestStatus:
+                                                                        RequestStatuses
+                                                                            .Returing
+                                                                            .name));
                                                           },
                                                           child: const Row(
                                                             children: [
-                                                              Icon(Icons
-                                                                  .check),
+                                                              Icon(Icons.check),
                                                               SizedBox(
                                                                 width: 10,
                                                               ),
@@ -154,11 +168,12 @@ class _ItemOrderPageState extends State<ItemOrderPage> {
                                                         RequestStatuses
                                                             .Returned.name
                                                     ? PopupMenuButton(
-                                                        itemBuilder:
-                                                            (context) {
+                                                        itemBuilder: (context) {
                                                         return <PopupMenuItem>[
                                                           PopupMenuItem(
                                                               onTap: () {
+                                                                Navigator.pop(
+                                                                    context);
                                                                 Navigator.push(
                                                                     context,
                                                                     MaterialPageRoute(
@@ -167,14 +182,17 @@ class _ItemOrderPageState extends State<ItemOrderPage> {
                                                                   return BlocProvider(
                                                                     create: (context) =>
                                                                         ReviewBloc(
-                                                                            reviewOps: ReviewOps()),
+                                                                            reviewOps:
+                                                                                ReviewOps()),
                                                                     child:
-                                                                        ReviewItemPage(itemBorrowed: itemDocs,),
+                                                                        ReviewItemPage(
+                                                                      itemBorrowed:
+                                                                          itemDocs,
+                                                                    ),
                                                                   );
                                                                 }));
                                                               },
-                                                              child:
-                                                                  const Row(
+                                                              child: const Row(
                                                                 children: [
                                                                   Icon(Icons
                                                                       .reviews),

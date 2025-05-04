@@ -21,3 +21,10 @@ class CreateItemLoadImagesEvent extends CreateItemEvent{
   @override 
   List<Object> get props => [previousImages];
 }
+
+class CreateItemRemoveImagesEvent extends CreateItemEvent{
+  final List<String> imageToRemove;
+  const CreateItemRemoveImagesEvent({required this.imageToRemove});
+  @override 
+  List<Object> get props => [imageToRemove];
+}

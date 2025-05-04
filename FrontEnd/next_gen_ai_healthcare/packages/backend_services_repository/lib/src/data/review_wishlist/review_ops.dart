@@ -61,8 +61,45 @@ class ReviewOps {
     }
   }
 
+  Future<Result<bool, String>> updateBorrowedItem(
+    Map<String, dynamic> borrowedItem) async {
+  try {
+    debugPrint("Sending PUT request to: $api/borrowed-items/${borrowedItem['_id']}");
+    debugPrint("Request Body: ${jsonEncode(borrowedItem)}");
+
+    final request = await http.put(
+      Uri.parse("$api/borrowed-items/${borrowedItem['_id']}"),
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode(borrowedItem),
+    );
+
+    debugPrint("Response status: ${request.statusCode}");
+    debugPrint("Response body: ${request.body}");
+
+    if (request.statusCode == 200) {
+      return Result.success(true);
+    } else if (request.statusCode == 500) {
+      return Result.failure("We are very sorry, there was a server error!");
+    } else if (request.statusCode >= 400 && request.statusCode < 500) {
+    debugPrint("I think this is where it ends");
+
+      return Result.failure("We are sorry, we could not find this item.");
+    } else {
+    debugPrint("I think this is where it ends");
+
+      return Result.failure("Some unexpected error occured");
+    }
+  } catch (e) {
+    debugPrint("Exception caught: $e");
+    return Result.failure(e.toString());
+  }
+}
+
   Future<Result<bool, String>> storeAReview(
       Map<String, dynamic> itemBorrowed, String review, double rating) async {
+        itemBorrowed['requestStatus'] = "Reviewed";
+        updateBorrowedItem(itemBorrowed);
+
     final reviewModel = ReviewModel(
         itemId: itemBorrowed['itemId'],
         renterName: itemBorrowed['borrowerId'],

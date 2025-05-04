@@ -29,6 +29,7 @@ class WishlistOps {
 
   Future<Result<List<Item>, String>> getWishlist(String userId) async {
     try {
+      // print(userId);
       final response = await http.get(Uri.parse("$api/wishlist/$userId"),
           headers: {'Content-Type': 'application/json'});
 
@@ -46,7 +47,7 @@ class WishlistOps {
             "Access denied. You do not have permission to view this wishlist.");
       } else {
         return Result.failure(
-            "Failed to fetch wishlist items. Unexpected error occurred.");
+            "Failed to fetch wishlist items. Unexpected error occurred. ${response.statusCode}");
       }
     } catch (e) {
       return Result.failure("An error occurred: ${e.toString()}");

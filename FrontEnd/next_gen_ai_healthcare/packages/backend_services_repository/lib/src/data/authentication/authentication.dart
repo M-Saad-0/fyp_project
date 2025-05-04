@@ -106,6 +106,7 @@ class AuthenticationImp extends Authentication {
     final uri = Uri.parse("$api/users/google-login");
     Map<String, dynamic> userJson = UserEntity.toJson(User.toEntity(user));
     userJson['idToken'] = idToken;
+    print(userJson);
     final response = await http.post(uri,
         headers: {'Content-Type': "application/json"}, body: json.encode(userJson));
     if (response.statusCode >= 400 && response.statusCode <= 600) {

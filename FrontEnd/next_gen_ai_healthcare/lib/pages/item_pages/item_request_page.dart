@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:next_gen_ai_healthcare/blocs/borrowing_process_bloc/borrowing_process_bloc.dart';
 import 'package:next_gen_ai_healthcare/blocs/item_request_order_bloc/item_request_order_bloc.dart';
 import 'package:next_gen_ai_healthcare/pages/item_pages/item_order_page.dart';
+import 'package:next_gen_ai_healthcare/pages/item_pages/location_map_page.dart';
 
 class ItemRequestPage extends StatefulWidget {
   final User user;
@@ -69,6 +70,17 @@ class _ItemRequestPageState extends State<ItemRequestPage> {
                             }
                             return Card(
                               child: ListTile(
+                                  onTap: () {
+                                    showDialog(
+                                        context: context,
+                                        builder: (context) {
+                                          return LocationMapPage(
+                                              itemLocation: item.location,
+                                              userLocation:
+                                                  widget.user.location!,
+                                              itemId: item.itemId);
+                                        });
+                                  },
                                   title: Text(item.itemName),
                                   subtitle: Text("${item.price} RS"),
                                   leading: Image(
@@ -104,7 +116,7 @@ class _ItemRequestPageState extends State<ItemRequestPage> {
                                                                   itemDocs,
                                                               newRequestStatus:
                                                                   RequestStatuses
-                                                                          .Accepted
+                                                                      .Accepted
                                                                       .name));
                                                     },
                                                     child: const Row(

@@ -138,6 +138,8 @@ class _ItemPageState extends State<ItemPage> {
                               seller: state.items[index].seller,
                               sold: state.items[index].sold,
                               rating: state.items[index].rating,
+                              itemLocation: state.items[index].location,
+                              userLocation: userLocation,
                               onTap: () {
                                 Navigator.push(
                                     context,

@@ -42,5 +42,13 @@ class CreateItemBloc extends Bloc<CreateItemEvent, CreateItemState> {
       emit(CreateItemLoadImages(
           images: [...event.previousImages, ...imagePaths]));
     });
+
+    on<CreateItemRemoveImagesEvent>((event, emit) {
+      if(event.imageToRemove.isEmpty){
+        emit(CreateItemInitial());
+        return;
+      }
+      emit(CreateItemLoadImages(images: event.imageToRemove));
+    });
   }
 }

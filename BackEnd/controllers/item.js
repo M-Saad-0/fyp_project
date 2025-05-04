@@ -123,3 +123,13 @@ exports.searchItems = async (req, res) => {
     handleError(res, error, 500, "Failed to search items");
   }
 };
+
+exports.getItemsByUserId = async (req, res) => {
+  try {
+    const items = await Item.find({ userId: req.params.userId });
+    if (!items.length) return res.status(404).json({ message: 'No items found for this user' });
+    res.status(200).json(items);
+  } catch (error) {
+    handleError(res, error, 500, "Failed to fetch items by user ID");
+  }
+};

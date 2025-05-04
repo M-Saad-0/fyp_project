@@ -101,7 +101,37 @@ class RetrieveDataImp extends RetrieveData {
       return Result.failure("An error occurred: $e");
     }
   }
-  
+
+  @override
+  Future<Result<List<Item>, String>> getItemsByUser(
+      {required String userId}) async {
+    Uri uri = Uri.parse("$api/items/$userId");
+    debugPrint("Fetching items from $uri");
+
+    try {
+      final response = await http.get(
+        uri,
+        headers: {'Content-Type': 'application/json'},
+      );
+      if (response.statusCode == 200) {
+        final jsonResponse = json.decode(response.body) as List;
+        final items = jsonResponse
+            .map((e) => Item.fromEntity(ItemEntity.fromJson(e)))
+            .toList();
+        return Result.success(items);
+      } else if (response.statusCode >= 400 && response.statusCode < 500) {
+        final error = json.decode(response.body)['message'] ??
+            "Could not find items for user $userId";
+        return Result.failure(error);
+      } else {
+        return Result.failure("An unexpected error occurred");
+      }
+    } catch (e) {
+      debugPrint("Error occurred: $e");
+      return Result.failure("An error occurred: $e");
+    }
+  }
+
   @override
   Future<Result<User, String>> getUserById({required String userId}) async {
     Uri uri = Uri.parse("$api/users/$userId");
@@ -114,7 +144,8 @@ class RetrieveDataImp extends RetrieveData {
       );
       if (response.statusCode == 200) {
         final jsonResponse = json.decode(response.body);
-        return Result.success(User.fromEntity(UserEntity.fromJson(jsonResponse)));
+        return Result.success(
+            User.fromEntity(UserEntity.fromJson(jsonResponse)));
       } else if (response.statusCode >= 400 && response.statusCode < 500) {
         final error = json.decode(response.body)['message'] ??
             "Could not find user with ID $userId";
@@ -128,9 +159,51 @@ class RetrieveDataImp extends RetrieveData {
     }
   }
 
+  @override
+  Future<Result<bool, String>> deleteItem({required String itemId}) async {
+    try {
+      final response = await http.delete(
+        Uri.parse("$api/items/$itemId"),
+        headers: {'Content-Type': 'application/json'},
+      );
+      if (response.statusCode == 200) {
+        return Result.success(jsonDecode(response.body)['message']);
+      } else if (response.statusCode == 404) {
+        return Result.failure("The item does not exist");
+      } else if (response.statusCode == 403) {
+        return Result.failure("You do not have access for this");
+      } else {
+        return Result.failure("Failed to delete the item. Unexpected error.");
+      }
+    } catch (e) {
+      debugPrint("Error occurred: ${e.toString()}");
+      return Result.failure("An error occurred: ${e.toString()}");
+    }
+  }
 
+  @override
+  Future<Result<bool, String>> updateItem(
+      {required itemId, required Item item}) async {
+    try {
+      final response = await http.put(Uri.parse("$api/items/$itemId"),
+          headers: {'Content-Type': 'application/json'},
+          body: jsonEncode(ItemEntity.toJson(Item.toEntity(item))));
+      if (response.statusCode == 200) {
+        return Result.success(jsonDecode(response.body)['message']);
+      } else if (response.statusCode == 404) {
+        return Result.failure("The item does not exist");
+      } else if (response.statusCode == 403) {
+        return Result.failure("You do not have access for this");
+      } else {
+        return Result.failure("Failed to update the item. Unexpected error.");
+      }
+    } catch (e) {
+      debugPrint("Error occurred: ${e.toString()}");
+      return Result.failure("An error occurred: ${e.toString()}");
+    }
+  }
 }
 
 // TODO: Please implement the borrowing feature
 // If the borrower could request to borrow first
-// And then if lender accepts the request he will lend  
+// And then if lender accepts the request he will lend

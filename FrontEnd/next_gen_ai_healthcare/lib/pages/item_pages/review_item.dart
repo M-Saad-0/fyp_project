@@ -32,8 +32,8 @@ class _ReviewItemPageState extends State<ReviewItemPage> {
                       content: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Icon(Icons.check_circle, color: Colors.green),
-                          SizedBox(width: 10),
+                          const Icon(Icons.check_circle, color: Colors.green),
+                          const SizedBox(width: 10),
                           Text(state.error)
                         ],
                       ),
@@ -135,11 +135,11 @@ class _ReviewItemPageState extends State<ReviewItemPage> {
                               review: _reviewController.text,
                               itemBorrowed: widget.itemBorrowed,
                               rating: selectedIndex.toDouble()));
-                          context
-                              .read<BorrowingProcessBloc>()
-                              .add(BorrowingProcessReviewdEvent(
-                                itemBorrowed: widget.itemBorrowed,
-                              ));
+                          // context
+                          //     .read<BorrowingProcessBloc>()
+                          //     .add(BorrowingProcessReviewdEvent(
+                          //       itemBorrowed: widget.itemBorrowed,
+                          //     ));
                           _reviewController.clear();
                           // Navigator.pop(context);
                         }

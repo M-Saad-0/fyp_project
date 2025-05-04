@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:next_gen_ai_healthcare/blocs/calculate_location_bloc/calculate_location_bloc.dart';
+import 'package:next_gen_ai_healthcare/widgets/calculate_location_text.dart';
 
 class ItemWidget extends StatelessWidget {
   final List<String> images;
@@ -8,17 +11,20 @@ class ItemWidget extends StatelessWidget {
   final double rating;
   final String description;
   final VoidCallback onTap;
+  final Map<String, dynamic> itemLocation;
+  final Map<String, dynamic> userLocation;
 
-  const ItemWidget({
-    super.key,
-    required this.images,
-    required this.title,
-    required this.seller,
-    required this.sold,
-    required this.rating,
-    required this.description,
-    required this.onTap,
-  });
+  const ItemWidget(
+      {super.key,
+      required this.images,
+      required this.title,
+      required this.seller,
+      required this.sold,
+      required this.rating,
+      required this.description,
+      required this.onTap,
+      required this.userLocation,
+      required this.itemLocation});
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +49,8 @@ class ItemWidget extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             ClipRRect(
-              borderRadius: const BorderRadius.vertical(top: Radius.circular(8)),
+              borderRadius:
+                  const BorderRadius.vertical(top: Radius.circular(8)),
               child: Image.network(
                 imageUrl,
                 height: 120,
@@ -65,21 +72,31 @@ class ItemWidget extends StatelessWidget {
                     //   fontSize: 14,
                     // ),
                   ),
-                  Row(children: [Text(
-                    seller,
-                    style: theme.textTheme.bodySmall?.copyWith(
-                      fontSize: 12,
-                      color: theme.colorScheme.onSurfaceVariant,
-                    ),
+                  Row(
+                    children: [
+                      Text(
+                        seller,
+                        style: theme.textTheme.bodySmall?.copyWith(
+                          fontSize: 12,
+                          color: theme.colorScheme.onSurfaceVariant,
+                        ),
+                      ),
+                      const VerticalDivider(),
+                      Text(
+                        '$sold sold',
+                        style: theme.textTheme.bodySmall?.copyWith(
+                          fontSize: 12,
+                          color: theme.colorScheme.onSurfaceVariant,
+                        ),
+                      ),
+                      const Spacer(),
+                      BlocProvider(
+                          create: (context) => CalculateLocationBloc(),
+                          child: CalculateLocationText(
+                              userLocation: userLocation,
+                              itemLocation: itemLocation))
+                    ],
                   ),
-                  const Spacer(),
-                  Text(
-                    '$sold sold',
-                    style: theme.textTheme.bodySmall?.copyWith(
-                      fontSize: 12,
-                      color: theme.colorScheme.onSurfaceVariant,
-                    ),
-                  ),],),
                   Row(
                     children: [
                       Icon(

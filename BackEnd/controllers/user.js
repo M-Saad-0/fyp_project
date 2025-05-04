@@ -89,6 +89,7 @@ exports.loginWithGoogle = async (req, res) => {
         email: email,
         password: null,
         picture: picture,
+        location:req.body.location,
       });
       await user.save();
     }

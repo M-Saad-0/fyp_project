@@ -78,7 +78,7 @@ exports.returnItem = async (req, res) => {
 exports.updatedBorrowedItem = async(req, res) => {
   try{
     const toUpdate = await ItemBorrowed.findByIdAndUpdate(req.params.id, req.body, {new: true});
-    if(toUpdate.requestStatus === "Reviewed"){
+    if(toUpdate.requestStatus === "Returned"){
       await Item.findByIdAndUpdate(toUpdate.itemId, {isRented: false});
     } 
     if (!toUpdate) return handleError(res, "Borrow record not found", 404);
