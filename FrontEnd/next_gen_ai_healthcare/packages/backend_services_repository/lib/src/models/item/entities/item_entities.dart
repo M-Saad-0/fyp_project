@@ -10,6 +10,7 @@ class ItemEntity {
   final String userId;
   final int price;
   final bool isRented;
+  final int reviews;
 
   ItemEntity({
     required this.itemId,
@@ -22,7 +23,8 @@ class ItemEntity {
     required this.rating,
     required this.userId, 
     required this.isRented,
-    required this.price
+    required this.price,
+    this.reviews=0,
   });
 
   static ItemEntity fromJson(Map<String, dynamic> jsonObject) {
@@ -37,7 +39,8 @@ class ItemEntity {
       rating: (jsonObject['rating'] as num?)?.toDouble() ?? 0.0,
       userId: jsonObject['userId'] ?? "",
       isRented: jsonObject['isRented']??false,
-      price: jsonObject['price']
+      price: jsonObject['price'],
+      reviews: jsonObject['reviews'] ?? 0,
     );
   }
 
@@ -53,7 +56,8 @@ class ItemEntity {
       'rating': itemEntity.rating, 
       'userId': itemEntity.userId,
       'isRented': itemEntity.isRented,
-      'price': itemEntity.price
+      'price': itemEntity.price,
+      'reviews': itemEntity.reviews,
     };
   }
 }

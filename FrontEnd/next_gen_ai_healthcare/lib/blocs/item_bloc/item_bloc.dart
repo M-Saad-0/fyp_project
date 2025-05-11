@@ -38,5 +38,20 @@ class ItemBloc extends Bloc<ItemEvent, ItemState> {
         emit(ItemErrorState(error: e.toString()));
       }
     });
+    on<MoreItemsRequired>((event, emit) async {
+      emit(ItemLoadingState());
+      try {
+        Result<List<Item>, String> result =
+            await retrieveData.getSpecificNumberOfItems(
+                itemCount: event.setNo, location: event.location);
+        if (result.isFailure) {
+          emit(ItemErrorState(error: result.error!));
+        } else {
+          emit(ItemSuccessState(items: result.value!));
+        }
+      } catch (e) {
+        emit(ItemErrorState(error: e.toString()));
+      }
+    });
   }
 }

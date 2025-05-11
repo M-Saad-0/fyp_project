@@ -3,6 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:next_gen_ai_healthcare/blocs/auth_bloc/auth_bloc.dart';
+import 'package:next_gen_ai_healthcare/blocs/hero_bloc/hero_bloc_bloc.dart';
 import 'package:next_gen_ai_healthcare/blocs/theme_bloc/theme_bloc.dart';
 import 'package:next_gen_ai_healthcare/firebase_options.dart';
 import 'package:next_gen_ai_healthcare/pages/auth/splash_page.dart';
@@ -40,7 +41,12 @@ class MyApp extends StatelessWidget {
                 AuthBloc(authentication: context.read<AuthenticationImp>()),
           ),
           BlocProvider<ThemeBloc>(
-            create: (context) => ThemeBloc(),
+            create: (context) => ThemeBloc(LocalThemeData()),
+          ),
+          BlocProvider<HeroBlocBloc>(
+            create: (context) => HeroBlocBloc(
+              retrieveData: RetrieveDataImp(),
+            ),
           ),
         ],
         child: BlocBuilder<ThemeBloc, ThemeState>(

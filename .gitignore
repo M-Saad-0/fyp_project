@@ -11,6 +11,7 @@ firebase_options.dart
 .history
 .svn/
 migrate_working_dir/
+./Medicine-Recommendation-System-Personalized-Medical-Recommendation-System-with-Machine-Learning/app/vectorstore/db_faiss/*
 
 # IntelliJ related
 *.iml

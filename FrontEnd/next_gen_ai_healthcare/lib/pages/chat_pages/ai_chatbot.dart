@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:next_gen_ai_healthcare/blocs/auth_bloc/auth_bloc.dart';
@@ -20,7 +19,7 @@ class _AiChatBotState extends State<AiChatBot>
   late Animation<double> slideAnimation;
   bool dragAnimation = false;
   late AuthState authState;
-  
+
   @override
   void dispose() {
     animationController.dispose();
@@ -30,7 +29,7 @@ class _AiChatBotState extends State<AiChatBot>
   @override
   void initState() {
     authState = context.read<AuthBloc>().state;
-    
+
     animationController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 250),
@@ -47,13 +46,14 @@ class _AiChatBotState extends State<AiChatBot>
     return Scaffold(
       body: GestureDetector(
         onHorizontalDragEnd: (details) {
-          if (!dragAnimation) {
+          final velocity = details.velocity.pixelsPerSecond.dx;
+          if (velocity > 0) {
             animationController.forward();
-          }
-          else if (dragAnimation) {
+            dragAnimation = true;
+          } else if (velocity < 0) {
             animationController.reverse();
+            dragAnimation = false;
           }
-          dragAnimation=!dragAnimation;
         },
         onHorizontalDragUpdate: (details) {
           if (details.delta.dx > 0) {
@@ -65,15 +65,15 @@ class _AiChatBotState extends State<AiChatBot>
         child: Stack(
           children: [
             BlocProvider(
-              create:
-                  (context) { final bloc = ChatHistoryBloc(
-                    chatBloc: context.read<ChatBloc>(),
-                    
-                  );
-                  bloc.add(LoadChatHistoryByDay());
-                  return bloc;
-                  },
-              child:  DrawerHistory(user: (authState as AuthLoadingSuccess).user),
+              create: (context) {
+                final bloc = ChatHistoryBloc(
+                  chatBloc: context.read<ChatBloc>(),
+                );
+                bloc.add(LoadChatHistoryByDay());
+                return bloc;
+              },
+              child:
+                  DrawerHistory(user: (authState as AuthLoadingSuccess).user),
             ),
             AnimatedBuilder(
               animation: slideAnimation,
@@ -100,7 +100,7 @@ class _AiChatBotState extends State<AiChatBot>
                           },
                         ),
                       ),
-                      body:  const ChatPage(),
+                      body: const ChatPage(),
                     ),
                   ),
                 );

@@ -25,7 +25,7 @@ class LocalThemeData {
   // }
   Future<void> storeTheme(String state) async {
     final box = Hive.box('settings');
-    await box.put('isLight', state == 'light' ? 1 : 0);
+    await box.put('isLight', state == 'light' ? true : false);
   }
 
   bool getTheme()  {

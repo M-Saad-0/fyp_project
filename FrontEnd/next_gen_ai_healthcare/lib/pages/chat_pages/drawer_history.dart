@@ -41,13 +41,15 @@ class _DrawerHistoryState extends State<DrawerHistory> {
                         child: Column(
                           mainAxisSize: MainAxisSize.min,
                           children: state.keys.isEmpty
-                              ?  [
-                                  const SizedBox(height: 250,),
+                              ? [
+                                  const SizedBox(
+                                    height: 250,
+                                  ),
                                   const Icon(Icons.content_paste_search_sharp),
-                                  const SizedBox(height: 10,),
-
-                                   const Text("No prompt stored yet"),
-                                  
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
+                                  const Text("No prompt stored yet"),
                                 ]
                               : state.keys
                                   .map(

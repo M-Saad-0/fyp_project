@@ -14,6 +14,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       try {
         User? user = authentication.checkUserAccountOnStartUp();
         if (user != null) {
+          final location = await LocationServicesImp().getLocation();
+          user.setLocation(lat: location['latitude'], long: location['longitude']);
           emit(AuthLoadingSuccess(user: user));
         } else {
           debugPrint("here");
@@ -42,17 +44,34 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           await GoogleSignInAuth.logOut();
         } else {
           final account = await GoogleSignInAuth.login();
+
           print("$account");
+          Map<String, dynamic> userLocation =
+              await LocationServicesImp().getLocation();
+              print(userLocation);
           final user = User(
               userId: account!.id,
               userName: account.displayName ?? "",
               email: account.email,
+              location: {
+                'type': "Point",
+                "coordinates": [
+                  userLocation['longitude'],
+                  userLocation['latitude'],
+                ]
+              },
               picture: account.photoUrl ?? "");
           final googleAuntentication = await account.authentication;
-          print("${googleAuntentication.idToken}");
-          await authentication.loginWithGoogle(
-              user: user, idToken: googleAuntentication.idToken);
-          emit(AuthLoadingSuccess(user: user));
+          // print("${googleAuntentication.idToken}");
+          final Result<User, String> result =
+              await authentication.loginWithGoogle(
+                  user: user, idToken: googleAuntentication.idToken);
+          if (result.isFailure) {
+            emit(AuthError());
+          } else {
+            print(result.value!.location);
+            emit(AuthLoadingSuccess(user: result.value!));
+          }
         }
       } catch (e) {
         print(

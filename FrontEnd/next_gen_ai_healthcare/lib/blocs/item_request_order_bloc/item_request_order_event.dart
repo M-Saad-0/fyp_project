@@ -12,12 +12,12 @@ class ItemOrderRequired extends ItemRequestOrderEvent{
 
   const ItemOrderRequired({required this.user});
   @override
-  List<Object> get props => [];
+  List<Object> get props => [user];
 }
 class ItemRequestRequired extends ItemRequestOrderEvent{
   final User user;
 
   const ItemRequestRequired({required this.user});
   @override
-  List<Object> get props => [];
+  List<Object> get props => [user];
 }

@@ -1,4 +1,5 @@
 const ItemReviews = require('../models/itemReview');
+const User = require("../models/user");
 
 const handleError = (res, error, statusCode = 500, message = "Internal Server Error") => {
   res.status(statusCode).json({
@@ -10,7 +11,7 @@ const handleError = (res, error, statusCode = 500, message = "Internal Server Er
 
 exports.getAllReviews = async (req, res) => {
   try {
-    const reviews = await ItemReviews.find();
+    const reviews = await ItemReviews.find({itemId: req.params.itemId} );
     res.status(200).json(reviews);
   } catch (error) {
     handleError(res, error, 500, "Failed to retrieve all reviews");
@@ -20,7 +21,14 @@ exports.getAllReviews = async (req, res) => {
 exports.getReviewsByItemId = async (req, res) => {
   try {
     const reviews = await ItemReviews.find({ itemId: req.params.itemId });
-    res.status(200).json(reviews);
+    const users = await User.find({ userId: { $in: reviews.map(review => review.userId)}})
+    const enrichedReviews = reviews.map((review, i) => ({
+      ...review._doc,
+      renterName: users[i]?.userName || '',
+      renterPicture: users[i]?.picture || ''
+    }));
+    console.log("Enriched Reviews: ", enrichedReviews);
+    res.status(200).json({enrichedReviews});
   } catch (error) {
     handleError(res, error, 500, "Failed to retrieve reviews for the item");
   }

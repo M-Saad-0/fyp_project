@@ -93,3 +93,71 @@ exports.getItemsNearMe = async (req, res) => {
     handleError(res, error, 500, "Failed to fetch items near you");
   }
 };
+
+
+exports.searchItems = async (req, res) => {
+  try {
+    const searchTerm = req.query.query;
+    const longitude = parseFloat(req.query.longitude);
+    const latitude = parseFloat(req.query.latitude);
+
+    if (!searchTerm) return handleError(res, null, 400, "No search term provided");
+
+    const items = await Item.find({
+      itemName: { $regex: searchTerm, $options: "i" }, 
+      location: {
+        $near: {
+          $geometry: {
+            type: "Point",
+            coordinates: [longitude, latitude],
+          },
+          $maxDistance: 10000, 
+        },
+      },
+    });
+
+    if (!items.length) return handleError(res, null, 404, "No medical equipment found");
+
+    res.status(200).json(items);
+  } catch (error) {
+    handleError(res, error, 500, "Failed to search items");
+  }
+};
+
+exports.getItemsByUserId = async (req, res) => {
+  try {
+    const items = await Item.find({ userId: req.params.userId });
+    if (!items.length) return res.status(404).json({ message: 'No items found for this user' });
+    res.status(200).json(items);
+  } catch (error) {
+    handleError(res, error, 500, "Failed to fetch items by user ID");
+  }
+};
+
+exports.getSpecificItemCount = async (req, res) => {
+  try {
+    console.log(req.query)
+    const { itemno, latitude, longitude } = req.query;
+    const count = parseInt(itemno) || 10;
+
+    const items = await Item.find({
+      location: {
+        $near: {
+          $geometry: {
+            type: 'Point',
+            coordinates: [parseFloat(longitude), parseFloat(latitude)]
+          },
+          $maxDistance: 10000
+        }
+      }
+    }).limit(count);
+
+    if (!items || items.length === 0) {
+      return handleError(res, null, 404, "No items found");
+    }
+
+    res.status(200).json({'items':items});
+  } catch (error) {
+    handleError(res, error, 500, "Server error");
+  }
+};

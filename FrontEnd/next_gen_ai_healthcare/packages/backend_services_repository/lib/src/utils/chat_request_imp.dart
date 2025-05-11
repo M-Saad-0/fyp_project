@@ -10,48 +10,35 @@ import 'package:http/http.dart' as http;
 class ChatRequestImp extends ChatRequest {
   @override
   Stream<String> postAiResponse(AiRequestModel model) async* {
-    debugPrint("reqquestin");
-    final Uri uri = Uri.parse(chatApiUrl);
-    final request =
-        http.Request("POST", uri)
-          ..headers["Content-Type"] = "application/json"
-          ..body = json.encode({
-            'contents': [
-              {
-                "parts": [
-                  {"text": model.query},
-                ],
-              },
-            ],
-          });
+  debugPrint("requesting");
 
-    try {
-      final streamData = await http.Client().send(request);
+  final Uri uri = Uri.parse('$chatApiUrl?query=${Uri.encodeComponent(model.query)}');
 
-      // ✅ Ensure status is OK before processing the stream
-      if (streamData.statusCode == 200) {
-        // ✅ Transform stream chunks properly
-        yield* streamData.stream.transform(utf8.decoder).transform(json.decoder).map((e) {
-          try {
-            Map<String, dynamic> jsonStream = e as Map<String, dynamic>;
-            // final candidates = jsonStream['cadidates'] as List<dynamic>;
-            // if (candidates != null && candidates.isNotEmpty) {
+  final request = http.Request("GET", uri)
+    ..headers["Content-Type"] = "application/json";
 
-            // }
-            final text =
-                jsonStream['candidates']
-                    .first['content']['parts']
-                    .first['text'];
-            return text ?? "";
-          } catch (e) {
-            return "Error parsing response: $e";
-          }
-        });
-      } else {
-        throw Exception("Failed to fetch data: ${streamData.statusCode}");
-      }
-    } catch (e) {
-      yield "Error: $e"; // ✅ Proper error handling
+  try {
+    final streamData = await http.Client().send(request);
+
+    if (streamData.statusCode == 200) {
+      yield* streamData.stream
+          .transform(utf8.decoder)
+          .transform(json.decoder)
+          .map((e) {
+        try {
+          Map<String, dynamic> jsonStream = e as Map<String, dynamic>;
+          final text = jsonStream['result'] as String?;
+          return text ?? "";
+        } catch (e) {
+          return "Error parsing response: $e";
+        }
+      });
+    } else {
+      throw Exception("Failed to fetch data: ${streamData.statusCode}");
     }
+  } catch (e) {
+    yield "Error: $e";
   }
+}
+
 }

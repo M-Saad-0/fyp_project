@@ -1,6 +1,7 @@
 import 'package:backend_services_repository/backend_service_repositoy.dart';
 import 'package:backend_services_repository/src/models/user/entities/entities.dart';
 part 'user.g.dart';
+
 @HiveType(typeId: 2)
 class User extends HiveObject {
   @HiveField(0)
@@ -17,6 +18,16 @@ class User extends HiveObject {
   double? personReputation;
   @HiveField(6)
   Map<String, dynamic>? location;
+
+  void setLocation({required double lat, required double long}) {
+    location = {
+      'type': "Point",
+      "coordinates": [
+        long,
+        lat,
+      ]
+    };
+  }
 
   User(
       {required this.userId,

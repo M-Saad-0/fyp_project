@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:next_gen_ai_healthcare/blocs/auth_bloc/auth_bloc.dart';
 import 'package:next_gen_ai_healthcare/blocs/create_item_bloc/create_item_bloc.dart';
 import 'package:next_gen_ai_healthcare/blocs/item_bloc/item_bloc.dart';
+import 'package:next_gen_ai_healthcare/blocs/review_bloc/review_bloc.dart';
 import 'package:next_gen_ai_healthcare/pages/item_pages/add_item.dart';
 import 'package:next_gen_ai_healthcare/pages/item_pages/item_detail_page.dart';
 import 'package:next_gen_ai_healthcare/widgets/item_widget.dart';
@@ -36,50 +37,71 @@ class _ItemPageState extends State<ItemPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("ItemPage"),
+        title: searchItem ? const SizedBox.shrink() : const Text("ItemPage"),
         actions: [
-          searchItem
-              ? AnimatedContainer(
-                  duration: const Duration(milliseconds: 300),
-                  child: Row(
-                    children: [
-                      TextField(
-                        onSubmitted: (searchTerm) {
-                          context.read<ItemBloc>().add(ItemSearchRequired(
-                              searchTerm: searchTerm, location: userLocation));
-                        },
-                        controller: searchController,
-                        decoration: InputDecoration(
-                            filled: true,
-                            fillColor: Theme.of(context)
-                                .colorScheme
-                                .surfaceContainerLow,
-                            border: const OutlineInputBorder(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(20)),
-                                borderSide: BorderSide(width: 0))),
-                      ),
-                      const SizedBox(
-                        width: 3,
-                      ),
-                      InkWell(
-                        onTap: () {
-                          setState(() {
-                            searchItem = true;
-                          });
-                        },
-                        child: const Icon(Icons.close_sharp),
-                      )
-                    ],
-                  ))
-              : InkWell(
-                  onTap: () {
-                    setState(() {
-                      searchItem = true;
-                    });
-                  },
-                  child: const Icon(Icons.search),
-                )
+          AnimatedContainer(
+              width: searchItem
+                  ? MediaQuery.sizeOf(context).width * 0.85
+                  : 48, // Animate width
+              height: 50,
+              duration: const Duration(milliseconds: 250),
+              child: searchItem
+                  ? Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        SizedBox(
+                          width: MediaQuery.sizeOf(context).width * .75,
+                          height: 50,
+                          child: TextField(
+                            onSubmitted: (searchTerm) {
+                              context.read<ItemBloc>().add(ItemSearchRequired(
+                                  searchTerm: searchTerm,
+                                  location: userLocation));
+                            },
+                            controller: searchController,
+                            autofocus: true,
+                            decoration: InputDecoration(
+                                hintText: 'Search items...',
+                                filled: true,
+                                fillColor: Theme.of(context)
+                                    .colorScheme
+                                    .surfaceContainerLow,
+                                border: const OutlineInputBorder(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(20)),
+                                    borderSide: BorderSide.none),
+                                suffixIcon: IconButton(
+                                    onPressed: () {
+                                      context.read<ItemBloc>().add(
+                                          ItemSearchRequired(
+                                              searchTerm: searchController.text,
+                                              location: userLocation));
+                                    },
+                                    icon: const Icon(Icons.search))),
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 3,
+                        ),
+                        InkWell(
+                          onTap: () {
+                            debugPrint(userLocation.toString());
+                            setState(() {
+                              searchItem = false;
+                            });
+                          },
+                          child: const Icon(Icons.close_sharp),
+                        )
+                      ],
+                    )
+                  : InkWell(
+                      onTap: () {
+                        setState(() {
+                          searchItem = true;
+                        });
+                      },
+                      child: const Icon(Icons.search),
+                    ))
         ],
       ),
       body: BlocBuilder<ItemBloc, ItemState>(
@@ -116,12 +138,19 @@ class _ItemPageState extends State<ItemPage> {
                               seller: state.items[index].seller,
                               sold: state.items[index].sold,
                               rating: state.items[index].rating,
+                              itemLocation: state.items[index].location,
+                              userLocation: userLocation,
                               onTap: () {
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) => ItemDetailPage(
-                                            item: state.items[index])));
+                                        builder: (context) => BlocProvider<ReviewBloc>(
+                                              create: (context) =>
+                                                  ReviewBloc(reviewOps: ReviewOps())
+                                                  ..add(FetchReviewEvent(itemId: state.items[index].itemId)),
+                                              child: ItemDetailPage(
+                                                  item: state.items[index]),
+                                            )));
                               },
                             );
                           }),

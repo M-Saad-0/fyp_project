@@ -1,0 +1,23 @@
+# Core environment
+python-dotenv>=1.0.1
+streamlit>=1.31.0
+streamlit
+Flask>=3.0.2
+gunicorn>=21.2.0  # <--- ADDED
+
+# LangChain & ecosystem
+langchain>=0.1.16
+langchain-community>=0.0.36
+langchain-core>=0.1.37
+langchain-groq>=0.0.5
+langchain-huggingface>=0.0.7
+
+# FAISS support
+faiss-cpu>=1.7.4
+
+# Hugging Face embeddings
+transformers>=4.40.1
+sentence-transformers>=2.5.1
+
+# Miscellaneous (ensure stable runtime)
+requests>=2.31.0

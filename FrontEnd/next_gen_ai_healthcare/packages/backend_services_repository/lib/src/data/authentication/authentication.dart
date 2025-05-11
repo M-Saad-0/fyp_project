@@ -28,7 +28,7 @@ class AuthenticationImp extends Authentication {
   @override
   Future<Result<User, String>> createAnAccount(
       {required User user, required String password}) async {
-    Uri url = Uri.parse("$api/users/register");
+   try { Uri url = Uri.parse("$api/users/register");
     Map<String, dynamic> toSend = UserEntity.toJson(User.toEntity(user));
     toSend['password'] = password;
 
@@ -49,6 +49,8 @@ class AuthenticationImp extends Authentication {
     } else {
       return Result.failure('');
       // return Result.failure('An unexpected error occurred.');
+    }} catch (e){
+      return Result.failure(e.toString());
     }
   }
 
@@ -104,6 +106,7 @@ class AuthenticationImp extends Authentication {
     final uri = Uri.parse("$api/users/google-login");
     Map<String, dynamic> userJson = UserEntity.toJson(User.toEntity(user));
     userJson['idToken'] = idToken;
+    print(userJson);
     final response = await http.post(uri,
         headers: {'Content-Type': "application/json"}, body: json.encode(userJson));
     if (response.statusCode >= 400 && response.statusCode <= 600) {

@@ -7,6 +7,7 @@ const itemSchema = new mongoose.Schema({
   images: { type: [String], required:false},
   rating: { type: Number, required:false},
   isRented: { type: Boolean, required:false},
+  reviews: { type: Number, required:false, default: 0 },
   price: { type: Number, required:false},         
   sales: { type: Number, required:false},
   location: {
@@ -19,6 +20,7 @@ const itemSchema = new mongoose.Schema({
 
 
 itemSchema.index({ userId: 1, location: '2dsphere' });
+itemSchema.index({ location: '2dsphere' });
 
 
 module.exports = mongoose.model('Item', itemSchema);

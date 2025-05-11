@@ -29,7 +29,7 @@ class _SplashPageState extends State<SplashPage> {
             ),
           );
         case AuthLoadingSuccess():
-          return const HomePage();
+          return HomePage(user: state.user);
         case AuthError():
           return const WelcomePage();
         case AuthLogoutState():

@@ -1,0 +1,166 @@
+[
+  {
+    "Disease": "Fungal infection",
+    "Diet": "['Antifungal Diet', 'Probiotics', 'Garlic', 'Coconut oil', 'Turmeric']"
+  },
+  {
+    "Disease": "Allergy",
+    "Diet": "['Elimination Diet', 'Omega-3-rich foods', 'Vitamin C-rich foods', 'Quercetin-rich foods', 'Probiotics']"
+  },
+  {
+    "Disease": "GERD",
+    "Diet": "['Low-Acid Diet', 'Fiber-rich foods', 'Ginger', 'Licorice', 'Aloe vera juice']"
+  },
+  {
+    "Disease": "Chronic cholestasis",
+    "Diet": "['Low-Fat Diet', 'High-Fiber Diet', 'Lean proteins', 'Whole grains', 'Fresh fruits and vegetables']"
+  },
+  {
+    "Disease": "Drug Reaction",
+    "Diet": "['Antihistamine Diet', 'Omega-3-rich foods', 'Vitamin C-rich foods', 'Quercetin-rich foods', 'Probiotics']"
+  },
+  {
+    "Disease": "Peptic ulcer disease",
+    "Diet": "['Low-Acid Diet', 'Fiber-rich foods', 'Ginger', 'Licorice', 'Aloe vera juice']"
+  },
+  {
+    "Disease": "AIDS",
+    "Diet": "['Balanced Diet', 'Protein-rich foods', 'Fruits and vegetables', 'Whole grains', 'Healthy fats']"
+  },
+  {
+    "Disease": "Diabetes",
+    "Diet": "['Low-Glycemic Diet', 'Fiber-rich foods', 'Lean proteins', 'Healthy fats', 'Low-fat dairy']"
+  },
+  {
+    "Disease": "Gastroenteritis",
+    "Diet": "['Bland Diet', 'Bananas', 'Rice', 'Applesauce', 'Toast']"
+  },
+  {
+    "Disease": "Bronchial Asthma",
+    "Diet": "['Anti-Inflammatory Diet', 'Omega-3-rich foods', 'Fruits and vegetables', 'Whole grains', 'Lean proteins']"
+  },
+  {
+    "Disease": "Hypertension",
+    "Diet": "['DASH Diet', 'Low-sodium foods', 'Fruits and vegetables', 'Whole grains', 'Lean proteins']"
+  },
+  {
+    "Disease": "Migraine",
+    "Diet": "['Migraine Diet', 'Low-Tyramine Diet', 'Caffeine withdrawal', 'Hydration', 'Magnesium-rich foods']"
+  },
+  {
+    "Disease": "Cervical spondylosis",
+    "Diet": "['Arthritis Diet', 'Anti-Inflammatory Diet', 'Omega-3-rich foods', 'Fruits and vegetables', 'Whole grains']"
+  },
+  {
+    "Disease": "Paralysis (brain hemorrhage)",
+    "Diet": "['Heart-Healthy Diet', 'Low-sodium foods', 'Fruits and vegetables', 'Whole grains', 'Lean proteins']"
+  },
+  {
+    "Disease": "Jaundice",
+    "Diet": "['Liver-Healthy Diet', 'Low-fat Diet', 'Fruits and vegetables', 'Whole grains', 'Lean proteins']"
+  },
+  {
+    "Disease": "Malaria",
+    "Diet": "['Malaria Diet', 'Hydration', 'High-Calorie Diet', 'Soft and bland foods', 'Oral rehydration solutions']"
+  },
+  {
+    "Disease": "Chicken pox",
+    "Diet": "['Chicken Pox Diet', 'High-Calorie Diet', 'Soft and bland foods', 'Hydration', 'Protein-rich foods']"
+  },
+  {
+    "Disease": "Dengue",
+    "Diet": "['Dengue Diet', 'Hydration', 'High-Calorie Diet', 'Soft and bland foods', 'Protein-rich foods']"
+  },
+  {
+    "Disease": "Typhoid",
+    "Diet": "['Typhoid Diet', 'High-Calorie Diet', 'Soft and bland foods', 'Hydration', 'Protein-rich foods']"
+  },
+  {
+    "Disease": "hepatitis A",
+    "Diet": "['Hepatitis A Diet', 'High-Calorie Diet', 'Soft and bland foods', 'Hydration', 'Protein-rich foods']"
+  },
+  {
+    "Disease": "Hepatitis B",
+    "Diet": "['Hepatitis B Diet', 'High-Calorie Diet', 'Soft and bland foods', 'Hydration', 'Protein-rich foods']"
+  },
+  {
+    "Disease": "Hepatitis C",
+    "Diet": "['Hepatitis C Diet', 'High-Calorie Diet', 'Soft and bland foods', 'Hydration', 'Protein-rich foods']"
+  },
+  {
+    "Disease": "Hepatitis D",
+    "Diet": "['Hepatitis D Diet', 'High-Calorie Diet', 'Soft and bland foods', 'Hydration', 'Protein-rich foods']"
+  },
+  {
+    "Disease": "Hepatitis E",
+    "Diet": "['Hepatitis E Diet', 'High-Calorie Diet', 'Soft and bland foods', 'Hydration', 'Protein-rich foods']"
+  },
+  {
+    "Disease": "Alcoholic hepatitis",
+    "Diet": "['Liver-Healthy Diet', 'Low-fat Diet', 'Fruits and vegetables', 'Whole grains', 'Lean proteins']"
+  },
+  {
+    "Disease": "Tuberculosis",
+    "Diet": "['TB Diet', 'High-Calorie Diet', 'Soft and bland foods', 'Hydration', 'Protein-rich foods']"
+  },
+  {
+    "Disease": "Common Cold",
+    "Diet": "['Cold Diet', 'Hydration', 'Warm fluids', 'Rest', 'Honey and lemon tea']"
+  },
+  {
+    "Disease": "Pneumonia",
+    "Diet": "['Pneumonia Diet', 'High-Calorie Diet', 'Soft and bland foods', 'Hydration', 'Protein-rich foods']"
+  },
+  {
+    "Disease": "Dimorphic hemmorhoids(piles)",
+    "Diet": "['Hemorrhoids Diet', 'High-Fiber Diet', 'Hydration', 'Warm baths', 'Stool softeners']"
+  },
+  {
+    "Disease": "Heart attack",
+    "Diet": "['Heart-Healthy Diet', 'Low-sodium foods', 'Fruits and vegetables', 'Whole grains', 'Lean proteins']"
+  },
+  {
+    "Disease": "Varicose veins",
+    "Diet": "['Varicose Veins Diet', 'High-Fiber Diet', 'Fruits and vegetables', 'Whole grains', 'Low-sodium foods']"
+  },
+  {
+    "Disease": "Hypothyroidism",
+    "Diet": "['Hypothyroidism Diet', 'Iodine-rich foods', 'Selenium-rich foods', 'Fruits and vegetables', 'Whole grains']"
+  },
+  {
+    "Disease": "Hyperthyroidism",
+    "Diet": "['Hyperthyroidism Diet', 'Low-Iodine Diet', 'Calcium-rich foods', 'Selenium-rich foods', 'Fruits and vegetables']"
+  },
+  {
+    "Disease": "Hypoglycemia",
+    "Diet": "['Hypoglycemia Diet', 'Complex carbohydrates', 'Protein-rich snacks', 'Fiber-rich foods', 'Healthy fats']"
+  },
+  {
+    "Disease": "Osteoarthristis",
+    "Diet": "['Arthritis Diet', 'Anti-Inflammatory Diet', 'Omega-3-rich foods', 'Fruits and vegetables', 'Whole grains']"
+  },
+  {
+    "Disease": "Arthritis",
+    "Diet": "['Arthritis Diet', 'Anti-Inflammatory Diet', 'Omega-3-rich foods', 'Fruits and vegetables', 'Whole grains']"
+  },
+  {
+    "Disease": "(vertigo) Paroymsal Positional Vertigo",
+    "Diet": "['Vertigo Diet', 'Low-Salt Diet', 'Hydration', 'Ginger tea', 'Vitamin D-rich foods']"
+  },
+  {
+    "Disease": "Acne",
+    "Diet": "['Acne Diet', 'Low-Glycemic Diet', 'Hydration', 'Fruits and vegetables', 'Probiotics']"
+  },
+  {
+    "Disease": "Urinary tract infection",
+    "Diet": "['UTI Diet', 'Hydration', 'Cranberry juice', 'Probiotics', 'Vitamin C-rich foods']"
+  },
+  {
+    "Disease": "Psoriasis",
+    "Diet": "['Psoriasis Diet', 'Anti-Inflammatory Diet', 'Omega-3-rich foods', 'Fruits and vegetables', 'Whole grains']"
+  },
+  {
+    "Disease": "Impetigo",
+    "Diet": "['Impetigo Diet', 'Antibiotic treatment', 'Fruits and vegetables', 'Hydration', 'Protein-rich foods']"
+  }
+]
